@@ -22,6 +22,8 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
+ThisBuild / bintrayVcsUrl := Some(s"git@github.com:${publishGithubUser.value}/${name.value}.git")
+
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-effect" % "2.0.0-M4",
   "org.specs2"    %% "specs2-core" % "4.5.1")
