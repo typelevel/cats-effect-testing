@@ -14,4 +14,24 @@
  * limitations under the License.
  */
 
-package object catseffectspecs2
+package cats.effect.specs2
+
+import cats.effect.IO
+
+import org.specs2.mutable.Specification
+
+class CatsEffectSpecs extends Specification with CatsEffect {
+
+  "cats effect specifications" should {
+    "run a non-effectful test" in {
+      true must beTrue
+    }
+
+    "run a simple effectful test" in IO {
+      true must beTrue
+      false must beFalse
+    }
+
+    // "timeout a failing test" in (IO.never: IO[Boolean])
+  }
+}

@@ -16,8 +16,12 @@
 
 name := "cats-effect-specs2"
 
-baseVersion in ThisBuild := "0.1"
+ThisBuild / baseVersion := "0.1"
 
-organization in ThisBuild := "com.codecommit"
-publishGithubUser in ThisBuild := "djspiewak"
-publishFullName in ThisBuild := "Daniel Spiewak"
+ThisBuild / organization := "com.codecommit"
+ThisBuild / publishGithubUser := "djspiewak"
+ThisBuild / publishFullName := "Daniel Spiewak"
+
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "cats-effect" % "2.0.0-M4",
+  "org.specs2"    %% "specs2-core" % "4.5.1")
