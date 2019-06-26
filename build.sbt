@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-name := "cats-effect-specs2"
+name := "cats-effect-testing"
 
 ThisBuild / baseVersion := "0.1"
 
@@ -24,6 +24,17 @@ ThisBuild / publishFullName := "Daniel Spiewak"
 
 ThisBuild / bintrayVcsUrl := Some(s"git@github.com:${publishGithubUser.value}/${name.value}.git")
 
-libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats-effect" % "2.0.0-M4",
-  "org.specs2"    %% "specs2-core" % "4.5.1")
+lazy val root = project
+  .in(file("."))
+  .aggregate(specs2)
+  .settings(noPublishSettings)
+
+lazy val specs2 = project
+  .in(file("specs2"))
+  .settings(
+    name := "cats-effect-testing-specs2",
+
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % "2.0.0-M4",
+      "org.specs2"    %% "specs2-core" % "4.5.1"))
+

@@ -1,6 +1,6 @@
-# cats-effect-specs2
+# cats-effect-testing
 
-A quickie little utility which makes it easier to write [specs2](https://specs2.org) specifications (mutable or functional) using `cats.effect.IO`.
+A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional) where the examples are effectful within `cats.effect.IO`. Our goal is to shortly expand this functionality to µTest and ScalaTest.
 
 ```scala
 import org.specs2.mutable.Specification
@@ -30,7 +30,7 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 ```sbt
 resolvers += Resolver.bintrayRepo("djspiewak", "maven")
 
-libraryDependencies += "com.codecommit" %% "cats-effect-specs2" % "<version>"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing" % "<version>"
 ```
 
 Published for Scala 2.13.0.
