@@ -30,7 +30,7 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 ```sbt
 resolvers += Resolver.bintrayRepo("djspiewak", "maven")
 
-libraryDependencies += "com.codecommit" %% "cats-effect-testing" % "<version>"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>"
 ```
 
-Published for Scala 2.13.0.
+Published for Scala 2.13, 2.12, and 2.11. Depends on cats-effect 2.0.0-M4.
