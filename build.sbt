@@ -24,9 +24,11 @@ ThisBuild / publishFullName := "Daniel Spiewak"
 
 ThisBuild / bintrayVcsUrl := Some(s"git@github.com:${publishGithubUser.value}/${name.value}.git")
 
+val catsEffectVersion = "2.0.0-M4"
+
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2)
+  .aggregate(specs2, utest)
   .settings(noPublishSettings)
 
 lazy val specs2 = project
@@ -35,6 +37,16 @@ lazy val specs2 = project
     name := "cats-effect-testing-specs2",
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % "2.0.0-M4",
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.specs2"    %% "specs2-core" % "4.5.1"))
 
+lazy val utest = project
+  .in(file("utest"))
+  .settings(
+    name := "cats-effect-testing-utest",
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
+      "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
+      "com.lihaoyi" %% "utest" % "0.7.1"))
