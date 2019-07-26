@@ -32,12 +32,10 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 ### Usage
 
 ```sbt
-resolvers += Resolver.bintrayRepo("djspiewak", "maven")
-
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>"
 ```
 
-Published for Scala 2.13, 2.12, and 2.11. Depends on cats-effect 2.0.0-M4.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and specs2 4.6.0.
 
 ## µTest
 
@@ -84,9 +82,7 @@ object DetSuite extends DeterministicIOTestSuite {
 ### Usage
 
 ```sbt
-resolvers += Resolver.bintrayRepo("djspiewak", "maven")
-
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-(to be published)
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and µTest 0.7.1.
