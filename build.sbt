@@ -22,6 +22,13 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
+ThisBuild / homepage := Some(url("https://github.com/djspiewak/cats-effect-testing"))
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/djspiewak/cats-effect-testing"),
+    "git@github.com:djspiewak/cats-effect-testing.git"))
+
 val catsEffectVersion = "2.0.0-M4"
 
 lazy val root = project
