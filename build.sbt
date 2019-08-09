@@ -33,7 +33,7 @@ val catsEffectVersion = "2.0.0-M4"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2, utest)
+  .aggregate(specs2, utest, minitest)
   .settings(noPublishSettings)
 
 lazy val specs2 = project
@@ -55,3 +55,15 @@ lazy val utest = project
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.1"))
+
+
+lazy val minitest = project
+  .in(file("minitest"))
+  .settings(
+    name := "cats-effect-testing-minitest",
+    testFrameworks += new TestFramework("minitest.runner.Framework"),
+
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
+      "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
+      "io.monix" %% "minitest" % "2.5.0"))

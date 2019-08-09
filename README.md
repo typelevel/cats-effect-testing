@@ -1,8 +1,8 @@
 # cats-effect-testing
 
-A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional)
-or [µTest](https://github.com/lihaoyi/utest) where the examples are effectful within `cats.effect.IO`.
-Our goal is to shortly expand this functionality to minitest and ScalaTest.
+A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional),
+[µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`.
+Our goal is to shortly expand this functionality to ScalaTest.
 
 
 ## Specs2
@@ -86,3 +86,42 @@ libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<versi
 ```
 
 Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and µTest 0.7.1.
+
+## Minitest
+Minitest is very similar to uTest, but being strongly typed, there's no need to support
+non-IO tests
+
+```scala
+import scala.concurrent.duration._
+import cats.implicits._
+import cats.effect.IO
+import cats.effect.minitest.{IOTestSuite, DeterministicIOTestSuite}
+
+// IOTestSuite uses real ExecutionContext for async operations
+// (can be overriden by reimplementing makeExecutionContext)
+object SimpleSuite extends IOTestSuite {
+  override val timeout = 1.second // Default timeout is 10 seconds
+
+  test("do the thing") {
+    IO(assert(true))
+  }
+}
+
+// DeterministicIOTestSuite simulates time with TestContext from cats-effect-laws
+// package. That allows to simulate long timeouts and have async operations
+// without actually slowing down your test suite, but it cannot use operations
+// that are hard-wired to do real async calls
+object DetSuite extends DeterministicIOTestSuite {
+  test("Simulated time!") {
+    IO.sleep(8.hours) >> IO(assert(!"life".isEmpty))
+  }
+}
+
+```
+
+### Usage
+
+```sbt
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-minitest" % "<version>" % Test
+```
+(not yet published)
