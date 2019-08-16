@@ -16,7 +16,7 @@
 
 package cats.effect.minitest
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 import cats.effect.{ContextShift, IO, Timer}
 import cats.effect.laws.util.TestContext

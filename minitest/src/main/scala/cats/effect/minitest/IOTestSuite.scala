@@ -15,10 +15,10 @@
  */
 
 package cats.effect.minitest
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.IO
 import minitest.api._
 
 abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] {
