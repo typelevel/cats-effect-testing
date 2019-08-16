@@ -56,7 +56,6 @@ lazy val utest = project
       "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.1"))
 
-
 lazy val minitest = project
   .in(file("minitest"))
   .settings(
