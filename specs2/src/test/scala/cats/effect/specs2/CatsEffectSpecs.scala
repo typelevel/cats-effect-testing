@@ -17,7 +17,8 @@
 package cats.effect.specs2
 
 import cats.effect.IO
-
+import cats.effect.concurrent.Deferred
+import cats.implicits._
 import org.specs2.mutable.Specification
 
 class CatsEffectSpecs extends Specification with CatsEffect {
@@ -30,6 +31,26 @@ class CatsEffectSpecs extends Specification with CatsEffect {
     "run a simple effectful test" in IO {
       true must beTrue
       false must beFalse
+    }
+
+    "really execute effects" in {
+      "First, this check creates a deferred value.".br
+
+      val deferredValue = Deferred.unsafeUncancelable[IO, Boolean]
+
+      "Then it executes two mutually associated steps:".br.tab
+
+      "forcibly attempt to get the deferred value" in {
+        deferredValue.get.unsafeRunTimed(Timeout) must beSome(true)
+      }
+
+      "Since specs2 executes steps in parallel by default, the second step gets executed anyway.".br
+
+      "complete the deferred value inside IO context" in {
+        deferredValue.complete(true) *> IO.pure(success)
+      }
+
+      "If effects didn't get executed then the previous step would fail after timeout.".br
     }
 
     // "timeout a failing test" in (IO.never: IO[Boolean])
