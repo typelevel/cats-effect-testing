@@ -65,4 +65,4 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
-      "io.monix" %% "minitest" % "2.5.0"))
+      "io.monix" %% "minitest" % "2.7.0"))
