@@ -27,7 +27,7 @@ trait CatsEffectGeneric {
 
   protected val Timeout: Duration = 10.seconds
 
-  implicit def effectAsResult[F[_] : Effect, R](implicit R: AsResult[R]): AsResult[F[R]] = new AsResult[F[R]] {
+  implicit def effectAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[F[R]] = new AsResult[F[R]] {
     def asResult(t: => F[R]): Result =
       t.toIO.unsafeRunTimed(Timeout)
         .map(R.asResult(_))
