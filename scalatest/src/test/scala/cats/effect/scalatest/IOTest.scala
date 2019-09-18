@@ -53,7 +53,7 @@ class IOSpecTests extends AsyncIOSpec with Matchers {
       IO(())
     }
 
-    "Successful IO[Unit] treated as success" in {
+    "Successful SyncIO[Unit] treated as success" in {
       SyncIO(())
     }
   }
