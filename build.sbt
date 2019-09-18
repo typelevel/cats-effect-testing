@@ -33,7 +33,7 @@ val catsEffectVersion = "2.0.0"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2, utest, minitest)
+  .aggregate(specs2, utest, minitest, scalatest)
   .settings(noPublishSettings)
 
 lazy val specs2 = project
