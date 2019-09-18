@@ -1,7 +1,6 @@
 # cats-effect-testing
 
-A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional),
-[µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`.
+A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional), [scalatest](http://scalatest.org), [µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`.
 Our goal is to shortly expand this functionality to ScalaTest.
 
 
@@ -36,6 +35,26 @@ libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<vers
 ```
 
 Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and specs2 4.6.0.
+
+## Scalatest
+
+```scala
+
+class MySpec extends AsyncIOSpec with Matchers {
+
+  "My Code " - {
+    "works" in {
+      IO(1).asserting(_ shouldBe 1)
+    }
+}
+
+```
+### Usage
+
+```sbt
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>"
+```
+
 
 ## µTest
 
