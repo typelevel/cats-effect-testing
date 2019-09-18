@@ -54,7 +54,9 @@ lazy val scalatest = project
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.scalatest"    %% "scalatest" % "3.1.0-RC2"),
     
-    mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
+    mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
+      "com.codecommit" %% name.value % "0.1.0",
+      "com.codecommit" %% name.value % "0.2.0" ))
 
 lazy val utest = project
   .in(file("utest"))
