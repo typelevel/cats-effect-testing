@@ -16,7 +16,8 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "0.2"
+ThisBuild / baseVersion := "0.3"
+ThisBuild / strictSemVer := false
 
 ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
@@ -49,11 +50,11 @@ lazy val specs2 = project
 lazy val scalatest = project
   .settings(
     name := "cats-effect-testing-scalatest",
-    
+
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.scalatest"    %% "scalatest" % "3.1.0-RC2"),
-    
+
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
       "com.codecommit" %% name.value % "0.2.0" ))
