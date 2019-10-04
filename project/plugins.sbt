@@ -1,1 +1,1 @@
-addSbtPlugin("com.codecommit" % "sbt-spiewak-sonatype" % "0.10.1")
+addSbtPlugin("com.codecommit" % "sbt-spiewak-sonatype" % "0.10.2")
