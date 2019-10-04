@@ -1,15 +1,14 @@
 # cats-effect-testing
 
-A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional), [scalatest](http://scalatest.org), [µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`.
-Our goal is to shortly expand this functionality to ScalaTest.
-
+A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional), [scalatest](http://scalatest.org), [µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`. The Specs2 support is generalized to other `Effect`s, such as Monix `Task` and `ZIO`.
 
 ## Specs2
+
 ```scala
 import org.specs2.mutable.Specification
 
 // for some reason, only class works here; object will not be detected by sbt
-class ExampleSpec extends Specification with CatsEffect {
+class ExampleSpec extends Specification with CatsIO {
   "examples" should {
     "do the things" in IO {
       true must beTrue
@@ -34,9 +33,9 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>"
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and specs2 4.6.0.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and specs2 4.7.1.
 
-## Scalatest
+## ScalaTest
 
 ```scala
 
@@ -55,6 +54,7 @@ class MySpec extends AsyncIOSpec with Matchers {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>"
 ```
 
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and scalatest 3.1.0-RC2.
 
 ## µTest
 
@@ -104,9 +104,10 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0-M4 and µTest 0.7.1.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and µTest 0.7.1.
 
 ## Minitest
+
 Minitest is very similar to uTest, but being strongly typed, there's no need to support
 non-IO tests
 
@@ -143,4 +144,5 @@ object DetSuite extends DeterministicIOTestSuite {
 ```sbt
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-minitest" % "<version>" % Test
 ```
-(not yet published)
+
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and minitest 2.7.0.
