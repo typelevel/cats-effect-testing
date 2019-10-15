@@ -46,6 +46,18 @@ lazy val specs2 = project
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.specs2"    %% "specs2-core" % "4.7.1"))
 
+lazy val `scalatest-scalacheck` = project
+  .in(file("scalatest-scalacheck"))
+  .settings(
+    name := "cats-effect-testing-scalatest-scalacheck",
+
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
+      "org.scalacheck" %% "scalacheck" % "1.14.2",
+      "org.scalatestplus" %% "scalatestplus-scalacheck" % "3.1.0.0-RC2"
+    )
+  )
+  .dependsOn(scalatest % Test)
 
 lazy val scalatest = project
   .settings(
