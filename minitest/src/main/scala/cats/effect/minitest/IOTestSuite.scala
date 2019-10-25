@@ -21,12 +21,16 @@ import scala.concurrent.duration._
 import cats.effect.IO
 import minitest.api._
 
-abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] {
+abstract class IOTestSuite extends BaseIOTestSuite[Unit, ExecutionContext] {
   protected def makeExecutionContext(): ExecutionContext = DefaultExecutionContext
 
   protected def timeout: FiniteDuration = 10.seconds
 
-  protected[effect] def mkSpec(name: String, ec: ExecutionContext, io: => IO[Unit]): TestSpec[Unit, Unit] =
-    TestSpec.async[Unit](name, _ => io.timeout(timeout).unsafeToFuture())
+  setup(IO.pure(()))
+
+  def test(name: String)(f: => IO[Unit]): Unit = super.test(name)(_ => f)
+
+  protected[effect] def mkSpec(name: String, ec: ExecutionContext, io: Unit => IO[Unit]): TestSpec[Unit, Unit] =
+    TestSpec.async[Unit](name, a => io(a).timeout(timeout).unsafeToFuture())
 
 }

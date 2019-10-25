@@ -24,7 +24,7 @@ import scala.concurrent.duration._
 
 import minitest.api.{DefaultExecutionContext, TestSpec}
 
-abstract class DeterministicIOTestSuite extends BaseIOTestSuite[TestContext] {
+abstract class DeterministicIOTestSuite extends BaseIOTestSuite[Unit, TestContext] {
   override protected final def makeExecutionContext(): TestContext = TestContext()
 
 
@@ -34,10 +34,12 @@ abstract class DeterministicIOTestSuite extends BaseIOTestSuite[TestContext] {
     executionContext.contextShift[IO](IO.ioEffect)
   override final implicit def ioTimer: Timer[IO] = executionContext.timer[IO](IO.ioEffect)
 
+  setup(IO.pure(()))
+  def test(name: String)(f: => IO[Unit]): Unit = super.test(name)(_ => f)
 
-  override protected[effect] def mkSpec(name: String, ec: TestContext, io: => IO[Unit]): TestSpec[Unit, Unit] =
+  override protected[effect] def mkSpec(name: String, ec: TestContext, io: Unit => IO[Unit]): TestSpec[Unit, Unit] =
     TestSpec.sync(name, _ => {
-      val f = io.unsafeToFuture()
+      val f = io(()).unsafeToFuture()
       ec.tick(365.days)
       f.value match {
         case Some(value) => value.get
