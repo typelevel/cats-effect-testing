@@ -57,7 +57,7 @@ lazy val `scalatest-scalacheck` = project
       "org.scalatestplus" %% "scalatestplus-scalacheck" % "3.1.0.0-RC2"
     )
   )
-  .dependsOn(scalatest % Test)
+  .dependsOn(scalatest)
 
 lazy val scalatest = project
   .settings(
