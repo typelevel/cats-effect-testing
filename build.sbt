@@ -34,7 +34,7 @@ val catsEffectVersion = "2.0.0"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2, utest, minitest, scalatest)
+  .aggregate(specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
   .settings(noPublishSettings)
 
 lazy val specs2 = project
@@ -46,6 +46,20 @@ lazy val specs2 = project
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.specs2"    %% "specs2-core" % "4.7.1"))
 
+lazy val `scalatest-scalacheck` = project
+  .in(file("scalatest-scalacheck"))
+  .settings(
+    name := "cats-effect-testing-scalatest-scalacheck",
+
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % catsEffectVersion,
+      "org.scalacheck" %% "scalacheck" % "1.14.2",
+      "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.0"
+    ),
+
+    mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
+  )
+  .dependsOn(scalatest)
 
 lazy val scalatest = project
   .settings(
