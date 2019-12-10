@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.utest
+package cats.effect.testing.utest
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}

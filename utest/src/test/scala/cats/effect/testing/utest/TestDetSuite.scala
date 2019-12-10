@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.utest
+package cats.effect.testing.utest
 
 import cats.implicits._
 import cats.effect.IO

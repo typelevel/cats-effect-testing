@@ -115,7 +115,7 @@ import scala.concurrent.duration._
 import utest._
 import cats.implicits._
 import cats.effect.IO
-import cats.effect.utest.{IOTestSuite, DeterministicIOTestSuite}
+import cats.effect.testing.utest.{IOTestSuite, DeterministicIOTestSuite}
 
 // IOTestSuite uses real ExecutionContext for async operations
 object SimpleSuite extends IOTestSuite {
