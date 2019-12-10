@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package cats.effect.specs2
+package cats.effect.testing.specs2
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.Effect
+import cats.effect.syntax.effect._
+import org.specs2.execute.{AsResult, Failure, Result}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
+import scala.language.higherKinds
 
-trait CatsIO extends CatsEffect {
-  private val executionContext: ExecutionContext = ExecutionContext.global
+trait CatsEffect {
 
-  implicit val ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit val ioTimer: Timer[IO] = IO.timer(executionContext)
+  protected val Timeout: Duration = 10.seconds
+
+  implicit def effectAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[F[R]] = new AsResult[F[R]] {
+    def asResult(t: => F[R]): Result =
+      t.toIO.unsafeRunTimed(Timeout)
+        .map(R.asResult(_))
+        .getOrElse(Failure(s"expectation timed out after $Timeout"))
+  }
 }

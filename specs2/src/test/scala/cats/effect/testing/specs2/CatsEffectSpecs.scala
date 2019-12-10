@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.specs2
+package cats.effect.testing.specs2
 
 import cats.effect.IO
 import cats.effect.concurrent.Deferred
