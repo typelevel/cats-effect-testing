@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package cats.effect.minitest
-import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
+package cats.effect.testing.minitest
 
 import cats.effect.IO
-import minitest.api._
+import scala.concurrent.duration._
+import cats.implicits._
 
-abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] {
-  protected def makeExecutionContext(): ExecutionContext = DefaultExecutionContext
+object TestNondetSuite extends IOTestSuite {
+  test("IO values should work") {
+    IO(true).flatMap(b => IO(assert(b)))
+  }
 
-  protected def timeout: FiniteDuration = 10.seconds
-
-  protected[effect] def mkSpec(name: String, ec: ExecutionContext, io: => IO[Unit]): TestSpec[Unit, Unit] =
-    TestSpec.async[Unit](name, _ => io.timeout(timeout).unsafeToFuture())
-
+  test("Timer and ContextShift should be available for respective operations") {
+    IO.sleep(1.second) >> IO.shift >> IO(assert(true)).timeout(1.second)
+  }
 }

@@ -167,7 +167,7 @@ non-IO tests
 import scala.concurrent.duration._
 import cats.implicits._
 import cats.effect.IO
-import cats.effect.minitest.{IOTestSuite, DeterministicIOTestSuite}
+import cats.effect.testing.minitest.{IOTestSuite, DeterministicIOTestSuite}
 
 // IOTestSuite uses real ExecutionContext for async operations
 // (can be overriden by reimplementing makeExecutionContext)

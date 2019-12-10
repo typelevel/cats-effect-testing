@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.minitest
+package cats.effect.testing.minitest
 
 import scala.concurrent.ExecutionContext
 

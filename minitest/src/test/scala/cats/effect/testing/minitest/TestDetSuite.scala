@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.minitest
+package cats.effect.testing.minitest
 
 import cats.effect.IO
 import scala.concurrent.duration._
