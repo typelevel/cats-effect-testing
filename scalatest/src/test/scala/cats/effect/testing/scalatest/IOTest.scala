@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.scalatest
+package cats.effect.testing.scalatest
 
 import cats.effect.{IO, SyncIO}
 import org.scalatest.matchers.should.Matchers

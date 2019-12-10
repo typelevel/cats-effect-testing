@@ -38,6 +38,8 @@ Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and specs2 4.7.1
 ## ScalaTest
 
 ```scala
+import cats.effect.testing.scalatest.AsyncIOSpec
+import org.scalatest.matchers.should.Matchers
 
 class MySpec extends AsyncIOSpec with Matchers {
 
@@ -62,7 +64,7 @@ The module provides an instance of the `org.scalatestplus.scalacheck.CheckerAsse
 
 ```scala
 import cats.data.EitherT
-import cats.effect.scalatest.AsyncIOSpec
+import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.effect.{IO, Sync}
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.{CheckerAsserting, ScalaCheckPropertyChecks}

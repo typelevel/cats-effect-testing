@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package cats.effect.scalatest.scalacheck
+package cats.effect.testing.scalatest.scalacheck
 
 import cats.data.EitherT
-import cats.effect.scalatest.AsyncIOSpec
+import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.effect.{IO, Sync}
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.{CheckerAsserting, ScalaCheckPropertyChecks}

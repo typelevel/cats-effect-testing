@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.scalatest.scalacheck
+package cats.effect.testing.scalatest.scalacheck
 
 import cats.effect.Effect
 import org.scalactic.source

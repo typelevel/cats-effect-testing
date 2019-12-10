@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.scalatest
+package cats.effect.testing.scalatest
 
 import cats.effect.{ContextShift, IO, Timer}
 import org.scalatest.freespec.AsyncFreeSpec

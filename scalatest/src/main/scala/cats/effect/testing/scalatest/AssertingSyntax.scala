@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cats.effect.scalatest
+package cats.effect.testing.scalatest
 
 import cats.Functor
 import cats.effect.Sync
