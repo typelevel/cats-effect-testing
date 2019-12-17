@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "0.3"
+ThisBuild / baseVersion := "0.4"
 ThisBuild / strictSemVer := false
 
 ThisBuild / organization := "com.codecommit"
