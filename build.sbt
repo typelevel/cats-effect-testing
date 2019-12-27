@@ -54,7 +54,7 @@ lazy val `scalatest-scalacheck` = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.scalacheck" %% "scalacheck" % "1.14.2",
-      "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.0"
+      "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.1"
     ),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
