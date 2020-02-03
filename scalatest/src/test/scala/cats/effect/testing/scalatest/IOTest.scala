@@ -18,8 +18,9 @@ package cats.effect.testing.scalatest
 
 import cats.effect.{IO, SyncIO}
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.freespec.AsyncFreeSpec
 
-class IOSpecTests extends AsyncIOSpec with Matchers {
+class IOSpecTests extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 
   "Asserting Syntax " - {
     "IO Asserting" in {
@@ -39,7 +40,6 @@ class IOSpecTests extends AsyncIOSpec with Matchers {
     }
   }
 
-
   "Effect assertions" - {
     "IO Assertion" in {
       IO(1 shouldBe 1)
@@ -58,6 +58,5 @@ class IOSpecTests extends AsyncIOSpec with Matchers {
     }
   }
 }
-
 
 case object AError extends Throwable

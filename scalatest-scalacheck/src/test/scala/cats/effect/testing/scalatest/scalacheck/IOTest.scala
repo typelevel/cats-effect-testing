@@ -20,9 +20,10 @@ import cats.data.EitherT
 import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.effect.{IO, Sync}
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.freespec.AsyncFreeSpec
 import org.scalatestplus.scalacheck.{CheckerAsserting, ScalaCheckPropertyChecks}
 
-class IOTest extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
+class IOTest extends AsyncFreeSpec with AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 
   "Scalacheck IO assertions" - {
 

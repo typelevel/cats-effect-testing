@@ -17,11 +17,11 @@
 package cats.effect.testing.scalatest
 
 import cats.effect.{ContextShift, IO, Timer}
-import org.scalatest.freespec.AsyncFreeSpec
+import org.scalatest.AsyncTestSuite
 
 import scala.concurrent.ExecutionContext
 
-trait AsyncIOSpec extends AsyncFreeSpec with AssertingSyntax with EffectTestSupport {
+trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuite: AsyncTestSuite =>
   override val executionContext: ExecutionContext = ExecutionContext.global
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
   implicit val ioTimer: Timer[IO] = IO.timer(executionContext)
