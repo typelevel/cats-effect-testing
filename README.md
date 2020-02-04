@@ -42,8 +42,9 @@ Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and specs2 4.7.1
 ```scala
 import cats.effect.testing.scalatest.AsyncIOSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.freespec.AsyncFreeSpec
 
-class MySpec extends AsyncIOSpec with Matchers {
+class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 
   "My Code " - {
     "works" in {
