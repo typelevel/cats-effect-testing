@@ -59,7 +59,7 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>"
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and scalatest 3.1.0-RC2.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and scalatest 3.1.0.
 
 ## ScalaTest ScalaCheck
 
