@@ -35,7 +35,7 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>"
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and specs2 4.7.1.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and specs2 4.7.1.
 
 ## ScalaTest
 
@@ -59,7 +59,7 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>"
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and scalatest 3.1.0.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and scalatest 3.1.0.
 
 ## ScalaTest ScalaCheck
 
@@ -111,7 +111,7 @@ class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest-scalacheck" % "<version>"
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0, scalatest-scalacheck-1-14 3.1.0.0, and scalacheck 1.14.2.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0, scalatest-scalacheck-1-14 3.1.0.0, and scalacheck 1.14.2.
 
 ## µTest
 
@@ -161,7 +161,7 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and µTest 0.7.1.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and µTest 0.7.1.
 
 ## Minitest
 
