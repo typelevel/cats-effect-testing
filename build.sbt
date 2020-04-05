@@ -92,6 +92,6 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
-      "io.monix" %% "minitest" % "2.7.0"),
+      "io.monix" %% "minitest" % "2.8.2"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
