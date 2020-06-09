@@ -25,13 +25,14 @@ import utest.TestSuite
 
 
 abstract class DeterministicIOTestSuite extends TestSuite {
-  protected val testContext: TestContext = TestContext()
   protected def allowNonIOTests: Boolean = false
 
-  implicit def ioContextShift: ContextShift[IO] = testContext.contextShift(IO.ioEffect)
-  implicit def ioTimer: Timer[IO] = testContext.timer(IO.ioEffect)
-
   override def utestWrap(path: Seq[String], runBody: => Future[Any])(implicit ec: ExecutionContext): Future[Any] = {
+    val testContext: TestContext = TestContext()
+
+    implicit def ioContextShift: ContextShift[IO] = testContext.contextShift(IO.ioEffect)
+    implicit def ioTimer: Timer[IO] = testContext.timer(IO.ioEffect)
+
     runBody.flatMap {
       case io: IO[Any] =>
         val f = io.unsafeToFuture()
