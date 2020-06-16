@@ -30,21 +30,22 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val catsEffectVersion = "2.1.0"
+val catsEffectVersion = "2.1.3"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
+  .aggregate(specs2.jvm, specs2.js, utest, minitest, scalatest, `scalatest-scalacheck`)
   .settings(noPublishSettings)
 
-lazy val specs2 = project
+lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
   .in(file("specs2"))
   .settings(
     name := "cats-effect-testing-specs2",
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % catsEffectVersion,
-      "org.specs2"    %% "specs2-core" % "4.8.3"))
+      "org.typelevel" %%% "cats-effect" % catsEffectVersion,
+      "org.specs2"    %%% "specs2-core" % "4.9.4"))
 
 lazy val `scalatest-scalacheck` = project
   .in(file("scalatest-scalacheck"))

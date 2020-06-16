@@ -20,8 +20,9 @@ import cats.effect.{IO, Resource}
 import cats.effect.concurrent.{Ref, Deferred}
 import cats.implicits._
 import org.specs2.mutable.Specification
+import org.specs2.concurrent.ExecutionEnv
 
-class CatsEffectSpecs extends Specification with CatsEffect {
+class CatsEffectSpecs(implicit ee: ExecutionEnv) extends Specification with CatsEffect {
 
   "cats effect specifications" should {
     "run a non-effectful test" in {

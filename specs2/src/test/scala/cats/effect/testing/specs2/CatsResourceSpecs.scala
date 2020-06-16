@@ -19,8 +19,9 @@ package cats.effect.testing.specs2
 import cats.effect._
 import cats.effect.concurrent.Ref
 import org.specs2.mutable.Specification
+import org.specs2.concurrent.ExecutionEnv
 
-class CatsResourceSpecs extends Specification with CatsResourceIO[Ref[IO, Int]] {
+class CatsResourceSpecs(implicit ee: ExecutionEnv) extends Specification with CatsResourceIO[Ref[IO, Int]] {
   sequential
 
   override def resource: Resource[IO, Ref[IO, Int]] = Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
