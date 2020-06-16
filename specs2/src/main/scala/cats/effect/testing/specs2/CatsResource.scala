@@ -16,7 +16,6 @@
 
 package cats.effect.testing.specs2
 
-import cats.implicits._
 import cats.effect._
 import org.specs2.specification.BeforeAfterAll
 import cats.effect.syntax.effect._
@@ -34,12 +33,10 @@ trait CatsResource[F[_], A] extends BeforeAfterAll {
   private var shutdown : F[Unit] = ResourceEffect.unit
 
   override def beforeAll(): Unit = {
-    resource.allocated
-      .map{ case (a, shutdownAction) => 
-        value = Some(a)
-        shutdown = shutdownAction
-      }.toIO
-        .unsafeRunTimed(ResourceTimeout)
+    ResourceEffect.map(resource.allocated){ case (a, shutdownAction) => 
+      value = Some(a)
+      shutdown = shutdownAction
+    }.toIO.unsafeRunTimed(ResourceTimeout)
   }
   override def afterAll(): Unit = {
     shutdown.toIO.unsafeRunTimed(ResourceTimeout)

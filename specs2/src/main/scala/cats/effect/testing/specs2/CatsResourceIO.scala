@@ -16,12 +16,7 @@
 
 package cats.effect.testing.specs2
 
-import cats.implicits._
 import cats.effect._
-import org.specs2.specification.BeforeAfterAll
-import cats.effect.syntax.effect._
-import scala.concurrent.duration._
-import org.specs2.execute.{AsResult, Failure, Result}
 
 trait CatsResourceIO[A] extends CatsResource[IO, A] with CatsIO {
 
