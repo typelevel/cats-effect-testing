@@ -16,7 +16,7 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect.Effect
+import cats.effect.{Effect, Resource, Sync}
 import cats.effect.syntax.effect._
 import org.specs2.execute.{AsResult, Failure, Result}
 
@@ -31,6 +31,14 @@ trait CatsEffect {
     def asResult(t: => F[R]): Result =
       t.toIO.unsafeRunTimed(Timeout)
         .map(R.asResult(_))
+        .getOrElse(Failure(s"expectation timed out after $Timeout"))
+  }
+
+  implicit def resourceAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[Resource[F,R]] = new AsResult[Resource[F,R]]{
+    def asResult(t: => Resource[F, R]): Result = 
+      t.use(r => Sync[F].delay(R.asResult(r)))
+        .toIO
+        .unsafeRunTimed(Timeout)
         .getOrElse(Failure(s"expectation timed out after $Timeout"))
   }
 }
