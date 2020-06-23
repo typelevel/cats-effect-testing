@@ -20,7 +20,7 @@ import cats.effect._
 
 trait CatsResourceIO[A] extends CatsResource[IO, A] with CatsIO {
 
-  implicit def ResourceEffect: Effect[IO] = IO.ioEffect
+  implicit def ResourceEffect: ConcurrentEffect[IO] = IO.ioConcurrentEffect
   
   def resource: Resource[IO, A]
 

@@ -16,13 +16,14 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect.{Effect, Resource, Sync, Timer}
+import cats.implicits._
+import cats.effect.{Async, Effect, Resource, Sync, Timer}
 import cats.effect.syntax.concurrent._
 import cats.effect.syntax.effect._
 import org.specs2.execute.{AsResult, Failure, Result}
 import specs2._
 import org.specs2.concurrent.ExecutionEnv
-import org.specs2.matcher.FutureMatchers.futureAsResult
+import org.specs2.specification.core._
 
 import scala.concurrent.duration._
 import scala.language.higherKinds
@@ -31,19 +32,16 @@ trait CatsEffect {
 
   protected val Timeout: FiniteDuration = 10.seconds
 
-  implicit def effectAsResult[F[_]: Effect, R](implicit ee: ExecutionEnv, R: AsResult[R]): AsResult[F[R]] = new AsResult[F[R]] {
-    def asResult(t: => F[R]): Result =
-      Effect[F].map(t)(R.asResult(_))
-        .toIO
-        .unsafeToFuture
-        .awaitFor(Timeout)
+  implicit def effectAsExecution[F[_]: Effect, R: AsResult] = new AsExecution[F[R]] {
+    def execute(r: => F[R]): Execution = 
+      Execution.withEnvAsync(env => 
+        (Async.shift(env.executionContext) >> r).toIO.unsafeToFuture())
   }
 
-  implicit def resourceAsResult[F[_]: Effect, R](implicit ee: ExecutionEnv, R: AsResult[R]): AsResult[Resource[F,R]] = new AsResult[Resource[F,R]]{
-    def asResult(t: => Resource[F, R]): Result = 
-      t.use(r => Sync[F].delay(R.asResult(r)))
-        .toIO
-        .unsafeToFuture
-        .awaitFor(Timeout)
+  implicit def resourceAsExecution[F[_]: Effect, R: AsResult] = new AsExecution[Resource[F, R]]{
+    def execute(t: => Resource[F,R]): Execution = 
+      Execution.withEnvAsync(env =>
+        (Async.shift(env.executionContext) >> t.use(_.pure[F])).toIO.unsafeToFuture()
+      )
   }
 }

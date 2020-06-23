@@ -22,7 +22,7 @@ import cats.implicits._
 import org.specs2.mutable.Specification
 import org.specs2.concurrent.ExecutionEnv
 
-class CatsEffectSpecs(implicit ee: ExecutionEnv) extends Specification with CatsEffect {
+class CatsEffectSpecs(implicit ee: ExecutionEnv) extends Specification with CatsIO {
 
   "cats effect specifications" should {
     "run a non-effectful test" in {
@@ -39,8 +39,8 @@ class CatsEffectSpecs(implicit ee: ExecutionEnv) extends Specification with Cats
     }.pure[Resource[IO, *]]
 
     "resource must be live for use" in {
-      Resource.make(Ref[IO].of(true))(_.set(false)).map{ 
-        _.get.map(_ must beTrue)
+      Resource.make(Ref[IO].of(true))(_.set(false)).flatMap{ ref => 
+        Resource.liftF(ref.get.map(_ must beTrue))
       }
     }
 
@@ -52,7 +52,7 @@ class CatsEffectSpecs(implicit ee: ExecutionEnv) extends Specification with Cats
       "Then it executes two mutually associated steps:".br.tab
 
       "forcibly attempt to get the deferred value" in {
-        deferredValue.get.unsafeRunTimed(Timeout) must beSome(true)
+        deferredValue.get.timeout(Timeout).map(_ must beTrue)
       }
 
       "Since specs2 executes steps in parallel by default, the second step gets executed anyway.".br

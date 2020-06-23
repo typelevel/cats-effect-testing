@@ -45,7 +45,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect" % catsEffectVersion,
-      "org.specs2"    %%% "specs2-core" % "4.9.4"))
+      "org.specs2"    %%% "specs2-core" % "4.10.0"))
 
 lazy val `scalatest-scalacheck` = project
   .in(file("scalatest-scalacheck"))

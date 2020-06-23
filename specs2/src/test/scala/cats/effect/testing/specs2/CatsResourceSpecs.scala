@@ -27,7 +27,7 @@ class CatsResourceSpecs(implicit ee: ExecutionEnv) extends Specification with Ca
   override def resource: Resource[IO, Ref[IO, Int]] = Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
 
   "cats resource specifications" should {
-    "run a resource modification" in withResource { ref => 
+    "run a resource modification" in useResource { ref => 
       ref.modify{a => 
         (a + 1, a)
       }.map(
@@ -35,7 +35,7 @@ class CatsResourceSpecs(implicit ee: ExecutionEnv) extends Specification with Ca
       )
     }
 
-    "be shared between tests" in withResource {ref => 
+    "be shared between tests" in useResource {ref => 
       ref.modify{a => 
         (a + 1, a)
       }.map(
