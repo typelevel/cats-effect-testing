@@ -18,12 +18,12 @@ package cats.effect.testing.scalatest
 
 import cats.effect._
 import cats.effect.syntax.effect._
-import org.scalatest.{AsyncTestSuite, BeforeAndAfterAll}
+import org.scalatest.{FixtureTestSuite, BeforeAndAfterAll, Outcome}
 
 import scala.concurrent.duration._
 
 trait CatsResource[F[_], A] extends BeforeAndAfterAll {
-  asyncTestSuite: AsyncTestSuite =>
+  asyncTestSuite: FixtureTestSuite =>
 
   def resource: Resource[F, A]
 
@@ -50,8 +50,11 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll {
     shutdown = ResourceEffect.unit
   }
 
-  def withResource[R](r: A => R): R = value.map(r).getOrElse {
-    fail("Resource Not Initialized When Trying to Use")
-  }
+  override type FixtureParam = A
+
+  override def withFixture(test: OneArgTest): Outcome =
+    withFixture(test.toNoArgTest(value.getOrElse {
+      fail("Resource Not Initialized When Trying to Use")
+    }))
 
 }

@@ -19,15 +19,15 @@ package cats.effect.testing.scalatest
 import cats.effect._
 import cats.effect.concurrent.Ref
 import org.scalatest.matchers.must.Matchers._
-import org.scalatest.wordspec.AsyncWordSpec
+import org.scalatest.wordspec.FixtureAnyWordSpec
 
-class CatsResourceSpecs extends AsyncWordSpec with CatsResourceIO[Ref[IO, Int]] {
+class CatsResourceSpecs extends FixtureAnyWordSpec with CatsResourceIO[Ref[IO, Int]] {
 
-  override def resource: Resource[IO, Ref[IO, Int]] =
+  override val resource: Resource[IO, Ref[IO, Int]] =
     Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
 
   "cats resource specifications" should {
-    "run a resource modification" in withResource { ref =>
+    "run a resource modification" in { ref =>
       ref
         .modify { a =>
           (a + 1, a)
@@ -37,7 +37,7 @@ class CatsResourceSpecs extends AsyncWordSpec with CatsResourceIO[Ref[IO, Int]] 
         )
     }
 
-    "be shared between tests" in withResource { ref =>
+    "be shared between tests" in { ref =>
       ref
         .modify { a =>
           (a + 1, a)
