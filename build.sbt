@@ -44,7 +44,7 @@ lazy val specs2 = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
-      "org.specs2"    %% "specs2-core" % "4.10.2"))
+      "org.specs2"    %% "specs2-core" % "4.10.3"))
 
 lazy val `scalatest-scalacheck` = project
   .in(file("scalatest-scalacheck"))
