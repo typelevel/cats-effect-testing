@@ -17,10 +17,10 @@
 package cats.effect.testing.scalatest
 
 import cats.effect._
-import org.scalatest.FixtureTestSuite
+import org.scalatest.FixtureAsyncTestSuite
 
 trait CatsResourceIO[A] extends CatsResource[IO, A] {
-  asyncTestSuite: FixtureTestSuite =>
+  asyncTestSuite: FixtureAsyncTestSuite =>
 
   implicit def ResourceEffect: Effect[IO] = IO.ioEffect
 
