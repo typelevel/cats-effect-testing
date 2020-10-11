@@ -23,6 +23,8 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
+ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
+
 ThisBuild / homepage := Some(url("https://github.com/djspiewak/cats-effect-testing"))
 
 ThisBuild / scmInfo := Some(

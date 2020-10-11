@@ -42,6 +42,8 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll {
       }
       .toIO
       .unsafeRunTimed(ResourceTimeout)
+
+    ()
   }
 
   override def afterAll(): Unit = {
