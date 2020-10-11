@@ -32,14 +32,15 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and specs2 4.7.1.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and specs2 4.7.1.
 
 ## ScalaTest
 
 ```scala
+import cats.effect._
 import cats.effect.testing.scalatest.AsyncIOSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.freespec.AsyncFreeSpec
@@ -56,10 +57,10 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and scalatest 3.1.0-RC2.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and scalatest 3.1.0.
 
 ## ScalaTest ScalaCheck
 
@@ -108,10 +109,10 @@ class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest-scalacheck" % "<version>"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0, scalatest-scalacheck-1-14 3.1.0.0, and scalacheck 1.14.2.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0, scalatest-scalacheck-1-14 3.1.0.0, and scalacheck 1.14.2.
 
 ## µTest
 
@@ -161,7 +162,7 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and µTest 0.7.1.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and µTest 0.7.1.
 
 ## Minitest
 

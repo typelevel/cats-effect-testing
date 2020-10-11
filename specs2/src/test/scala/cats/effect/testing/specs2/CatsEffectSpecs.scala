@@ -16,8 +16,8 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect.IO
-import cats.effect.concurrent.Deferred
+import cats.effect.{IO, Resource}
+import cats.effect.concurrent.{Ref, Deferred}
 import cats.implicits._
 import org.specs2.mutable.Specification
 
@@ -31,6 +31,16 @@ class CatsEffectSpecs extends Specification with CatsEffect {
     "run a simple effectful test" in IO {
       true must beTrue
       false must beFalse
+    }
+
+    "run a simple resource test" in {
+      true must beTrue
+    }.pure[Resource[IO, *]]
+
+    "resource must be live for use" in {
+      Resource.make(Ref[IO].of(true))(_.set(false)).map{ 
+        _.get.map(_ must beTrue)
+      }
     }
 
     "really execute effects" in {

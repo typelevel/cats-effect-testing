@@ -51,7 +51,7 @@ trait AssertingSyntax {
      */
     def assertThrows[E <: Throwable](implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
       self.attempt.flatMap {
-        case Left(t: E) => F.pure(Succeeded: Assertion)
+        case Left(_: E) => F.pure(Succeeded: Assertion)
         case Left(t) =>
           F.delay(
             fail(

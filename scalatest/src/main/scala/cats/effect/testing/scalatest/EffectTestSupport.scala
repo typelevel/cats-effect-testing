@@ -28,11 +28,11 @@ import org.scalatest.{Assertion, Succeeded}
 trait EffectTestSupport {
 
   implicit def syncIoToFutureAssertion(io: SyncIO[Assertion]): Future[Assertion] =
-    io.toIO.unsafeToFuture
+    io.toIO.unsafeToFuture()
   implicit def ioToFutureAssertion(io: IO[Assertion]): Future[Assertion] =
-    io.unsafeToFuture
+    io.unsafeToFuture()
   implicit def syncIoUnitToFutureAssertion(io: SyncIO[Unit]): Future[Assertion] =
-    io.toIO.as(Succeeded).unsafeToFuture
+    io.toIO.as(Succeeded).unsafeToFuture()
   implicit def ioUnitToFutureAssertion(io: IO[Unit]): Future[Assertion] =
-    io.as(Succeeded).unsafeToFuture
+    io.as(Succeeded).unsafeToFuture()
 }

@@ -23,6 +23,8 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
+ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
+
 ThisBuild / homepage := Some(url("https://github.com/djspiewak/cats-effect-testing"))
 
 ThisBuild / scmInfo := Some(
@@ -44,7 +46,7 @@ lazy val specs2 = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
-      "org.specs2"    %% "specs2-core" % "4.8.3"))
+      "org.specs2"    %% "specs2-core" % "4.10.4"))
 
 lazy val `scalatest-scalacheck` = project
   .in(file("scalatest-scalacheck"))
@@ -53,7 +55,7 @@ lazy val `scalatest-scalacheck` = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
-      "org.scalatestplus" %% "scalacheck-1-14" % "3.1.0.1",
+      "org.scalatestplus" %% "scalacheck-1-14" % "3.1.4.0",
       "org.scalacheck" %% "scalacheck" % "1.14.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
@@ -66,7 +68,7 @@ lazy val scalatest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
-      "org.scalatest"    %% "scalatest" % "3.1.0"),
+      "org.scalatest"    %% "scalatest" % "3.2.2"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
@@ -81,7 +83,7 @@ lazy val utest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % catsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.3"))
+      "com.lihaoyi" %% "utest" % "0.7.5"))
 
 lazy val minitest = project
   .in(file("minitest"))
