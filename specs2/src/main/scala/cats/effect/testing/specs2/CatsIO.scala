@@ -21,8 +21,7 @@ import cats.effect.{ContextShift, IO, Timer}
 import scala.concurrent.ExecutionContext
 
 trait CatsIO extends CatsEffect {
-  private val executionContext: ExecutionContext = ExecutionContext.global
-
-  implicit val ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit val ioTimer: Timer[IO] = IO.timer(executionContext)
+  implicit def executionContext: ExecutionContext = ExecutionContext.global
+  implicit def ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
+  implicit def ioTimer: Timer[IO] = IO.timer(executionContext)
 }
