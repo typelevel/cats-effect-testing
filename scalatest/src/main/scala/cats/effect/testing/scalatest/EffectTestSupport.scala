@@ -17,7 +17,6 @@
 package cats.effect.testing.scalatest
 
 import cats.effect._
-import cats.implicits._
 import scala.concurrent.Future
 import org.scalatest.{Assertion, Succeeded}
 
