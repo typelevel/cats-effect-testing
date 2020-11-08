@@ -23,7 +23,7 @@ import scala.concurrent.duration._
 import org.specs2.execute.{AsResult, Failure, Result}
 
 trait CatsResource[F[_], A] extends BeforeAfterAll {
-  
+
   def resource: Resource[F, A]
 
   implicit def ResourceEffect: Effect[F]
@@ -33,10 +33,12 @@ trait CatsResource[F[_], A] extends BeforeAfterAll {
   private var shutdown : F[Unit] = ResourceEffect.unit
 
   override def beforeAll(): Unit = {
-    ResourceEffect.map(resource.allocated){ case (a, shutdownAction) => 
+    ResourceEffect.map(resource.allocated){ case (a, shutdownAction) =>
       value = Some(a)
       shutdown = shutdownAction
     }.toIO.unsafeRunTimed(ResourceTimeout)
+
+    ()
   }
   override def afterAll(): Unit = {
     shutdown.toIO.unsafeRunTimed(ResourceTimeout)
@@ -47,7 +49,7 @@ trait CatsResource[F[_], A] extends BeforeAfterAll {
   def withResource[R](r: A => R)(implicit R: AsResult[R]): Result = {
     value.fold[Result](
       Failure("Resource Not Initialized When Trying to Use")
-    )(a => 
+    )(a =>
       R.asResult(r(a))
     )
 

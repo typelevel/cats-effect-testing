@@ -21,7 +21,6 @@ import cats.effect.syntax.effect._
 import org.specs2.execute.{AsResult, Failure, Result}
 
 import scala.concurrent.duration._
-import scala.language.higherKinds
 
 trait CatsEffect {
 
@@ -35,7 +34,7 @@ trait CatsEffect {
   }
 
   implicit def resourceAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[Resource[F,R]] = new AsResult[Resource[F,R]]{
-    def asResult(t: => Resource[F, R]): Result = 
+    def asResult(t: => Resource[F, R]): Result =
       t.use(r => Sync[F].delay(R.asResult(r)))
         .toIO
         .unsafeRunTimed(Timeout)
