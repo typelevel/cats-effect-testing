@@ -112,7 +112,7 @@ class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0, scalatest-scalacheck-1-14 3.1.0.0, and scalacheck 1.14.2.
+Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0, scalatest-scalacheck-1-15 3.2.2.0, and scalacheck 1.15.1.
 
 ## µTest
 
