@@ -109,7 +109,7 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.7.0"),
+      "io.monix" %% "minitest" % "2.9.0"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
   .settings(noDottySettings)
