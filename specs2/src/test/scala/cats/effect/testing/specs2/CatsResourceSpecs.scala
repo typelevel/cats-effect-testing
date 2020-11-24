@@ -16,26 +16,26 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect._
-import cats.effect.concurrent.Ref
-import org.specs2.mutable.Specification
+import cats.effect.{IO, Ref, Resource}
+import org.specs2.mutable.SpecificationLike
 
-class CatsResourceSpecs extends Specification with CatsResourceIO[Ref[IO, Int]] {
+class CatsResourceSpecs extends CatsResource[IO, Ref[IO, Int]] with SpecificationLike {
   sequential
 
-  override def resource: Resource[IO, Ref[IO, Int]] = Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
+  val resource: Resource[IO, Ref[IO, Int]] =
+    Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
 
   "cats resource specifications" should {
-    "run a resource modification" in withResource { ref => 
-      ref.modify{a => 
+    "run a resource modification" in withResource { ref =>
+      ref.modify{a =>
         (a + 1, a)
       }.map(
         _ must_=== 0
       )
     }
 
-    "be shared between tests" in withResource {ref => 
-      ref.modify{a => 
+    "be shared between tests" in withResource {ref =>
+      ref.modify{a =>
         (a + 1, a)
       }.map(
         _ must_=== 1

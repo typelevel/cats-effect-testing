@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.specs2
+package cats.effect
+package testing
 
-import cats.effect._
+import scala.concurrent.Future
 
-trait CatsResourceIO[A] extends CatsResource[IO, A] with CatsIO {
+trait UnsafeRun[F[_]] {
+  def unsafeToFuture[A](fa: F[A]): Future[A]
+}
 
-  implicit def ResourceEffect: Effect[IO] = IO.ioEffect
-  
-  def resource: Resource[IO, A]
+object UnsafeRun {
 
+  def apply[F[_]](implicit F: UnsafeRun[F]): UnsafeRun[F] = F
+
+  implicit object unsafeRunForCatsIO extends UnsafeRun[IO] {
+    import unsafe.implicits.global
+
+    // TODO is it worth isolating runtimes between test runs?
+    def unsafeToFuture[A](ioa: IO[A]): Future[A] =
+      ioa.unsafeToFuture()
+  }
 }

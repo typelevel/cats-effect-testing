@@ -34,19 +34,24 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "2.3.0-M1"
+val CatsEffectVersion = "3.0.0-M3"
 
 val noDottySettings = Seq(
   crossScalaVersions := (ThisBuild / crossScalaVersions).value.filter(_.startsWith("2.")))
 
 lazy val root = project
   .in(file("."))
-  .aggregate(specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
+  .aggregate(core, specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
   .settings(noPublishSettings)
   .settings(noDottySettings)
 
+lazy val core = project
+  .in(file("core"))
+  .settings(libraryDependencies += "org.typelevel" %% "cats-effect" % CatsEffectVersion)
+
 lazy val specs2 = project
   .in(file("specs2"))
+  .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
 
@@ -59,15 +64,14 @@ lazy val specs2 = project
         mimaPreviousArtifacts.value
     })
   .settings(dottyLibrarySettings)
-  .settings(libraryDependencies += "org.typelevel" %% "cats-effect" % CatsEffectVersion)
 
 lazy val `scalatest-scalacheck` = project
   .in(file("scalatest-scalacheck"))
+  .dependsOn(core)
   .settings(
     name := "cats-effect-testing-scalatest-scalacheck",
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.scalatestplus" %% "scalacheck-1-15" % "3.2.3.0",
       "org.scalacheck" %% "scalacheck" % "1.15.1"),
 
@@ -77,11 +81,12 @@ lazy val `scalatest-scalacheck` = project
   .dependsOn(scalatest)
 
 lazy val scalatest = project
+  .in(file("scalatest"))
+  .dependsOn(core)
   .settings(
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.scalatest"    %% "scalatest" % "3.2.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
@@ -91,25 +96,25 @@ lazy val scalatest = project
 
 lazy val utest = project
   .in(file("utest"))
+  .dependsOn(core)
   .settings(
     name := "cats-effect-testing-utest",
 
     testFrameworks += new TestFramework("utest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.5"))
   .settings(noDottySettings)    // µTest is out for 0.27.0-RC1, but the artifacts are broken (lihaoyi/utest#226)
 
 lazy val minitest = project
   .in(file("minitest"))
+  .dependsOn(core)
   .settings(
     name := "cats-effect-testing-minitest",
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
       "io.monix" %% "minitest" % "2.7.0"),
 

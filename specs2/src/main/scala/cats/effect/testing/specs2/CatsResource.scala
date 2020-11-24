@@ -14,44 +14,73 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.specs2
+package cats.effect.testing
+package specs2
 
-import cats.effect._
-import org.specs2.specification.BeforeAfterAll
-import cats.effect.syntax.effect._
-import scala.concurrent.duration._
+import cats.effect.{Async, Deferred, Resource, Sync}
+import cats.syntax.all._
+import cats.effect.syntax.all._
+
 import org.specs2.execute.{AsResult, Failure, Result}
+import org.specs2.specification.BeforeAfterAll
 
-trait CatsResource[F[_], A] extends BeforeAfterAll {
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
-  def resource: Resource[F, A]
+abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll with CatsEffect {
 
-  implicit def ResourceEffect: Effect[F]
+  val resource: Resource[F, A]
+
   protected val ResourceTimeout: Duration = 10.seconds
 
-  private var value : Option[A] = None
-  private var shutdown : F[Unit] = ResourceEffect.unit
+  // we use the gate to prevent further step execution
+  // this isn't *ideal* because we'd really like to block the specs from even starting
+  // but it does work on scalajs
+  private var gate: Option[Deferred[F, Unit]] = None
+  private var value: Option[A] = None
+  private var shutdown: F[Unit] = ().pure[F]
 
   override def beforeAll(): Unit = {
-    ResourceEffect.map(resource.allocated){ case (a, shutdownAction) =>
-      value = Some(a)
-      shutdown = shutdownAction
-    }.toIO.unsafeRunTimed(ResourceTimeout)
+    val toRun = for {
+      d <- Deferred[F, Unit]
+      _ <- Sync[F] delay {
+        gate = Some(d)
+      }
 
-    ()
+      pair <- resource.allocated
+      (a, shutdownAction) = pair
+
+      _ <- Sync[F] delay {
+        value = Some(a)
+        shutdown = shutdownAction
+      }
+
+      _ <- d.complete(())
+    } yield ()
+
+    val guarded = ResourceTimeout match {
+      case fd: FiniteDuration => toRun.timeout(fd)
+      case _ => toRun
+    }
+
+    UnsafeRun[F].unsafeToFuture(guarded)
   }
+
   override def afterAll(): Unit = {
-    shutdown.toIO.unsafeRunTimed(ResourceTimeout)
+    Await.result(UnsafeRun[F].unsafeToFuture(shutdown), ResourceTimeout)
+
+    gate = None
     value = None
-    shutdown = ResourceEffect.unit
+    shutdown = ().pure[F]
   }
 
-  def withResource[R](r: A => R)(implicit R: AsResult[R]): Result = {
-    value.fold[Result](
-      Failure("Resource Not Initialized When Trying to Use")
-    )(a =>
-      R.asResult(r(a))
-    )
+  def withResource[R](f: A => F[R]): F[R] =
+    gate match {
+      case Some(g) =>
+        g.get *> f(value.get)
 
-  }
+      // specs2's runtime should prevent this case
+      case None =>
+        new AssertionError("Resource uninitialized").raiseError[F, R]
+    }
 }

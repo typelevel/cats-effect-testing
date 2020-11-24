@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.specs2
+package cats.effect.testing
+package specs2
 
-import cats.effect.{Effect, Resource, Sync}
-import cats.effect.syntax.effect._
-import org.specs2.execute.{AsResult, Failure, Result}
+import cats.effect.{MonadCancel, Resource}
+import cats.syntax.all._
+
+import org.specs2.execute.AsResult
+import org.specs2.specification.core.{AsExecution, Execution}
 
 import scala.concurrent.duration._
 
@@ -26,18 +29,17 @@ trait CatsEffect {
 
   protected val Timeout: Duration = 10.seconds
 
-  implicit def effectAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[F[R]] = new AsResult[F[R]] {
-    def asResult(t: => F[R]): Result =
-      t.toIO.unsafeRunTimed(Timeout)
-        .map(R.asResult(_))
-        .getOrElse(Failure(s"expectation timed out after $Timeout"))
+  implicit def effectAsExecution[F[_]: UnsafeRun, R](implicit R: AsResult[R]): AsExecution[F[R]] = new AsExecution[F[R]] {
+    def execute(t: => F[R]): Execution =
+      Execution
+        .withEnvAsync(_ => UnsafeRun[F].unsafeToFuture(t))
+        .copy(timeout = Some(Timeout) collect {
+          case fd: FiniteDuration => fd
+        })
   }
 
-  implicit def resourceAsResult[F[_]: Effect, R](implicit R: AsResult[R]): AsResult[Resource[F,R]] = new AsResult[Resource[F,R]]{
-    def asResult(t: => Resource[F, R]): Result =
-      t.use(r => Sync[F].delay(R.asResult(r)))
-        .toIO
-        .unsafeRunTimed(Timeout)
-        .getOrElse(Failure(s"expectation timed out after $Timeout"))
+  implicit def resourceAsExecution[F[_]: UnsafeRun, R](implicit F: MonadCancel[F, Throwable], R: AsResult[R]): AsExecution[Resource[F, R]] = new AsExecution[Resource[F, R]] {
+    def execute(t: => Resource[F, R]): Execution =
+      effectAsExecution[F, R].execute(t.use(_.pure[F]))
   }
 }

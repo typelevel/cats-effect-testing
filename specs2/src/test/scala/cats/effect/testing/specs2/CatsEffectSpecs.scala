@@ -16,8 +16,7 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect.{IO, Resource}
-import cats.effect.concurrent.{Ref, Deferred}
+import cats.effect.{IO, Ref, Resource}
 import cats.implicits._
 import org.specs2.mutable.Specification
 
@@ -38,29 +37,21 @@ class CatsEffectSpecs extends Specification with CatsEffect {
     }.pure[Resource[IO, *]]
 
     "resource must be live for use" in {
-      Resource.make(Ref[IO].of(true))(_.set(false)).map{ 
-        _.get.map(_ must beTrue)
+      Resource.make(Ref[IO].of(true))(_.set(false)) evalMap { r =>
+        r.get.map(_ must beTrue)
       }
     }
 
     "really execute effects" in {
-      "First, this check creates a deferred value.".br
-
-      val deferredValue = Deferred.unsafeUncancelable[IO, Boolean]
-
-      "Then it executes two mutually associated steps:".br.tab
+      var gate = false
 
       "forcibly attempt to get the deferred value" in {
-        deferredValue.get.unsafeRunTimed(Timeout) must beSome(true)
+        IO.cede.untilM_(IO(gate)).as(ok)
       }
-
-      "Since specs2 executes steps in parallel by default, the second step gets executed anyway.".br
 
       "complete the deferred value inside IO context" in {
-        deferredValue.complete(true) *> IO.pure(success)
+        (IO { gate = true }).as(ok)
       }
-
-      "If effects didn't get executed then the previous step would fail after timeout.".br
     }
 
     // "timeout a failing test" in (IO.never: IO[Boolean])

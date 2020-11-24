@@ -16,8 +16,7 @@
 
 package cats.effect.testing.scalatest
 
-import cats.effect._
-import cats.effect.concurrent.Ref
+import cats.effect.{IO, Ref, Resource}
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.wordspec.FixtureAsyncWordSpec
 
