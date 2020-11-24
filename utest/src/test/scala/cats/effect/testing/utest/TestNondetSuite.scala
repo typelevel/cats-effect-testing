@@ -21,7 +21,8 @@ import cats.effect.IO
 import utest.{Tests, assert, test}
 import scala.concurrent.duration._
 
-object TestNondetSuite extends IOTestSuite {
+object TestNondetSuite extends EffectTestSuite[IO] {
+
   override val timeout: FiniteDuration = 2.seconds
   override val allowNonIOTests: Boolean = true
 

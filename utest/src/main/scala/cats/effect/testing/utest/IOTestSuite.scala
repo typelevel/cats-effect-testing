@@ -14,30 +14,25 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.utest
+package cats.effect.testing
+package utest
+
+import cats.effect.Temporal
+import cats.effect.syntax.all._
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
+import scala.reflect.ClassTag
 
-import cats.effect.{ContextShift, IO, Timer}
-import utest._
+abstract class EffectTestSuite[F[_]: Temporal: UnsafeRun](implicit Tag: ClassTag[F[Any]])
+    extends _root_.utest.TestSuite {
 
-
-abstract class IOTestSuite extends TestSuite {
-  protected def makeExecutionContext(): ExecutionContext = ExecutionContext.global
   protected def timeout: FiniteDuration = 10.seconds
   protected def allowNonIOTests: Boolean = false
 
-  protected lazy val executionContext: ExecutionContext = makeExecutionContext()
-
-  implicit def ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit def ioTimer: Timer[IO] = IO.timer(executionContext)
-
   override def utestWrap(path: Seq[String], runBody: => Future[Any])(implicit ec: ExecutionContext): Future[Any] = {
-    // Shadow the parameter EC with our EC
-    implicit val ec: ExecutionContext = this.executionContext
-    runBody.flatMap {
-      case io: IO[Any] => io.timeout(timeout).unsafeToFuture()
+    runBody flatMap {
+      case Tag(io) => UnsafeRun[F].unsafeToFuture(io.timeout(timeout))
       case other if allowNonIOTests => Future.successful(other)
       case other => throw new RuntimeException(s"Test body must return an IO value. Got $other")
     }

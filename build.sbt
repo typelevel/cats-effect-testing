@@ -103,7 +103,7 @@ lazy val utest = project
     testFrameworks += new TestFramework("utest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
+      "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.5"))
   .settings(noDottySettings)    // µTest is out for 0.27.0-RC1, but the artifacts are broken (lihaoyi/utest#226)
 
@@ -115,7 +115,7 @@ lazy val minitest = project
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
+      "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
       "io.monix" %% "minitest" % "2.7.0"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))

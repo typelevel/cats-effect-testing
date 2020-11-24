@@ -16,34 +16,41 @@
 
 package cats.effect.testing.utest
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.duration._
+import cats.effect.{unsafe, IO}
+import cats.effect.testkit.TestContext
 
-import cats.effect.{ContextShift, IO, Timer}
-import cats.effect.laws.util.TestContext
 import utest.TestSuite
 
+import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
 
 abstract class DeterministicIOTestSuite extends TestSuite {
   protected val testContext: TestContext = TestContext()
   protected def allowNonIOTests: Boolean = false
 
-  implicit def ioContextShift: ContextShift[IO] = testContext.contextShift(IO.ioEffect)
-  implicit def ioTimer: Timer[IO] = testContext.timer(IO.ioEffect)
-
   override def utestWrap(path: Seq[String], runBody: => Future[Any])(implicit ec: ExecutionContext): Future[Any] = {
+    val scheduler = new unsafe.Scheduler {
+
+      def sleep(delay: FiniteDuration, action: Runnable): Runnable = {
+        val cancel = testContext.schedule(delay, action)
+        new Runnable { def run() = cancel() }
+      }
+
+      def nowMillis() = testContext.now().toMillis
+      def monotonicNanos() = testContext.now().toNanos
+    }
+
+    implicit val runtime: unsafe.IORuntime =
+      unsafe.IORuntime(testContext, testContext, scheduler, () => ())
+
     runBody.flatMap {
       case io: IO[Any] =>
         val f = io.unsafeToFuture()
-        testContext.tick(365.days)
+        testContext.tickAll(365.days)
         assert(testContext.state.tasks.isEmpty)
         f.value match {
           case Some(_) => f
-          case None => throw new RuntimeException(
-            s"The IO in ${path.mkString(".")} did not terminate.\n" +
-            "It's possible that you are using a ContextShift that is backed by other ExecutionContext or" +
-            "the test code is waiting indefinitely."
-          )
+          case None => throw new RuntimeException(s"The IO in ${path.mkString(".")} did not terminate.")
         }
       case other if allowNonIOTests => Future.successful(other)
       case other =>
