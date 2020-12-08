@@ -46,7 +46,7 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
         gate = Some(d)
       }
 
-      pair <- resource.allocated
+      pair <- resource.allocated[F, A]
       (a, shutdownAction) = pair
 
       _ <- Sync[F] delay {
