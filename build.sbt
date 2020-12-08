@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("0.27.0-RC1", "3.0.0-M1", "2.12.12", "2.13.3")
+ThisBuild / crossScalaVersions := Seq("3.0.0-M1", "3.0.0-M2", "2.12.12", "2.13.3")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -34,7 +34,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "2.3.0-M1"
+val CatsEffectVersion = "2.3.0"
 
 val noDottySettings = Seq(
   crossScalaVersions := (ThisBuild / crossScalaVersions).value.filter(_.startsWith("2.")))
