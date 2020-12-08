@@ -16,9 +16,11 @@
 
 package cats.effect.testing.scalatest
 
-import cats.effect._
-import scala.concurrent.Future
+import cats.effect.{unsafe, IO, SyncIO}
+
 import org.scalatest.{Assertion, Succeeded}
+
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * Copied from FS2
@@ -26,12 +28,15 @@ import org.scalatest.{Assertion, Succeeded}
  */
 trait EffectTestSupport {
 
+  implicit def ioRuntime: unsafe.IORuntime
+  implicit def executionContext: ExecutionContext
+
   implicit def syncIoToFutureAssertion(io: SyncIO[Assertion]): Future[Assertion] =
-    io.toIO.unsafeToFuture()
+    Future(io.unsafeRunSync())
   implicit def ioToFutureAssertion(io: IO[Assertion]): Future[Assertion] =
     io.unsafeToFuture()
   implicit def syncIoUnitToFutureAssertion(io: SyncIO[Unit]): Future[Assertion] =
-    io.toIO.as(Succeeded).unsafeToFuture()
+    Future(io.as(Succeeded).unsafeRunSync())
   implicit def ioUnitToFutureAssertion(io: IO[Unit]): Future[Assertion] =
     io.as(Succeeded).unsafeToFuture()
 }

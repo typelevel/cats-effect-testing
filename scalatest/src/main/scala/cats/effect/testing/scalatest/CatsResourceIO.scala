@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.scalatest
+package cats.effect.testing
+package scalatest
 
-import cats.effect._
+import cats.effect.{Async, IO}
+
 import org.scalatest.FixtureAsyncTestSuite
 
-trait CatsResourceIO[A] extends CatsResource[IO, A] {
-  asyncTestSuite: FixtureAsyncTestSuite =>
-
-  implicit def ResourceEffect: Effect[IO] = IO.ioEffect
-
-  def resource: Resource[IO, A]
-
+trait CatsResourceIO[A] extends CatsResource[IO, A] { this: FixtureAsyncTestSuite =>
+  final def ResourceAsync = Async[IO]
+  final def ResourceUnsafeRun = UnsafeRun[IO]
 }

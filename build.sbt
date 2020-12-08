@@ -41,7 +41,7 @@ val noDottySettings = Seq(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
+  .aggregate(core, specs2, utest, minitest, scalatest)
   .settings(noPublishSettings)
   .settings(noDottySettings)
 
@@ -64,21 +64,6 @@ lazy val specs2 = project
         mimaPreviousArtifacts.value
     })
   .settings(dottyLibrarySettings)
-
-lazy val `scalatest-scalacheck` = project
-  .in(file("scalatest-scalacheck"))
-  .dependsOn(core)
-  .settings(
-    name := "cats-effect-testing-scalatest-scalacheck",
-
-    libraryDependencies ++= Seq(
-      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.3.0",
-      "org.scalacheck" %% "scalacheck" % "1.15.1"),
-
-    mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
-  )
-  .settings(noDottySettings)
-  .dependsOn(scalatest)
 
 lazy val scalatest = project
   .in(file("scalatest"))

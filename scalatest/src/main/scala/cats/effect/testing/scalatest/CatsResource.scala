@@ -14,49 +14,92 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.scalatest
+package cats.effect.testing
+package scalatest
 
-import cats.effect._
-import cats.effect.syntax.effect._
-import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome}
+import cats.effect.{Async, Deferred, Resource, Sync}
+import cats.effect.syntax.all._
+import cats.syntax.all._
 
+import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome, Outcome}
+
+import scala.concurrent.Await
 import scala.concurrent.duration._
 
-trait CatsResource[F[_], A] extends BeforeAndAfterAll {
-  asyncTestSuite: FixtureAsyncTestSuite =>
+trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSuite =>
 
-  def resource: Resource[F, A]
+  def ResourceAsync: Async[F]
+  private[this] implicit def _ResourceAsync: Async[F] = ResourceAsync
 
-  implicit def ResourceEffect: Effect[F]
+  def ResourceUnsafeRun: UnsafeRun[F]
+  private[this] implicit def _ResourceUnsafeRun: UnsafeRun[F] = ResourceUnsafeRun
+
+  val resource: Resource[F, A]
+
   protected val ResourceTimeout: Duration = 10.seconds
 
+  // we use the gate to prevent further step execution
+  // this isn't *ideal* because we'd really like to block the specs from even starting
+  // but it does work on scalajs
+  private var gate: Option[Deferred[F, Unit]] = None
   private var value: Option[A] = None
-  private var shutdown: F[Unit] = ResourceEffect.unit
+  private var shutdown: F[Unit] = ().pure[F]
 
   override def beforeAll(): Unit = {
-    ResourceEffect
-      .map(resource.allocated) {
-        case (a, shutdownAction) =>
-          value = Some(a)
-          shutdown = shutdownAction
+    val toRun = for {
+      d <- Deferred[F, Unit]
+      _ <- Sync[F] delay {
+        gate = Some(d)
       }
-      .toIO
-      .unsafeRunTimed(ResourceTimeout)
 
+      pair <- resource.allocated
+      (a, shutdownAction) = pair
+
+      _ <- Sync[F] delay {
+        value = Some(a)
+        shutdown = shutdownAction
+      }
+
+      _ <- d.complete(())
+    } yield ()
+
+    val guarded = ResourceTimeout match {
+      case fd: FiniteDuration => toRun.timeout(fd)
+      case _ => toRun
+    }
+
+    UnsafeRun[F].unsafeToFuture(guarded)
     ()
   }
 
   override def afterAll(): Unit = {
-    shutdown.toIO.unsafeRunTimed(ResourceTimeout)
+    Await.result(UnsafeRun[F].unsafeToFuture(shutdown), ResourceTimeout)
+
+    gate = None
     value = None
-    shutdown = ResourceEffect.unit
+    shutdown = ().pure[F]
   }
 
   override type FixtureParam = A
 
-  override def withFixture(test: OneArgAsyncTest): FutureOutcome =
-    withFixture(test.toNoArgAsyncTest(value.getOrElse {
-      fail("Resource Not Initialized When Trying to Use")
-    }))
+  override def withFixture(test: OneArgAsyncTest): FutureOutcome = {
+    lazy val toRun: F[Outcome] = Sync[F] defer {
+      gate match {
+        case Some(g) =>
+          g.get *> (Async[F] fromFuture {
+            Sync[F] delay {
+              withFixture(test.toNoArgAsyncTest(value.getOrElse {
+                fail("Resource Not Initialized When Trying to Use")
+              })).toFuture
+            }
+          })
 
+        case None =>
+          // just... loop I guess? sometimes we can hit this before scalatest has run the earlier action
+          toRun
+      }
+    }
+
+    new FutureOutcome(UnsafeRun[F].unsafeToFuture(toRun))
+  }
 }
