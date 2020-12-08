@@ -52,7 +52,7 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
         gate = Some(d)
       }
 
-      pair <- resource.allocated
+      pair <- resource.allocated[F, A]
       (a, shutdownAction) = pair
 
       _ <- Sync[F] delay {
