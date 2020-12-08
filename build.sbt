@@ -42,8 +42,8 @@ val noDottySettings = Seq(
 lazy val root = project
   .in(file("."))
   .aggregate(core, specs2, utest, minitest, scalatest)
-  .settings(noPublishSettings)
   .settings(noDottySettings)
+  .enablePlugins(NoPublishPlugin)
 
 lazy val core = project
   .in(file("core"))
