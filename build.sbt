@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-M1", "3.0.0-M2", "2.12.12", "2.13.3")
+ThisBuild / crossScalaVersions := Seq("3.0.0-M2", "2.12.12", "2.13.3")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -36,14 +36,10 @@ ThisBuild / scmInfo := Some(
 
 val CatsEffectVersion = "2.3.0"
 
-val noDottySettings = Seq(
-  crossScalaVersions := (ThisBuild / crossScalaVersions).value.filter(_.startsWith("2.")))
-
 lazy val root = project
   .in(file("."))
   .aggregate(specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
   .enablePlugins(NoPublishPlugin)
-  .settings(noDottySettings)
 
 lazy val specs2 = project
   .in(file("specs2"))
@@ -73,7 +69,6 @@ lazy val `scalatest-scalacheck` = project
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
   )
-  .settings(noDottySettings)
   .dependsOn(scalatest)
 
 lazy val scalatest = project
@@ -87,7 +82,6 @@ lazy val scalatest = project
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
       "com.codecommit" %% name.value % "0.2.0" ))
-  .settings(noDottySettings)
 
 lazy val utest = project
   .in(file("utest"))
@@ -100,7 +94,6 @@ lazy val utest = project
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.5"))
-  .settings(noDottySettings)    // µTest is out for 0.27.0-RC1, but the artifacts are broken (lihaoyi/utest#226)
 
 lazy val minitest = project
   .in(file("minitest"))
@@ -111,7 +104,6 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.7.0"),
+      "io.monix" %% "minitest" % "2.9.1"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
-  .settings(noDottySettings)
