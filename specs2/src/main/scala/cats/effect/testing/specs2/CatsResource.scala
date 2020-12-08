@@ -21,7 +21,6 @@ import cats.effect.{Async, Deferred, Resource, Sync}
 import cats.syntax.all._
 import cats.effect.syntax.all._
 
-import org.specs2.execute.{AsResult, Failure, Result}
 import org.specs2.specification.BeforeAfterAll
 
 import scala.concurrent.Await
@@ -64,6 +63,7 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
     }
 
     UnsafeRun[F].unsafeToFuture(guarded)
+    ()
   }
 
   override def afterAll(): Unit = {
