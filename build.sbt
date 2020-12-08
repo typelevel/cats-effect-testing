@@ -42,7 +42,7 @@ val noDottySettings = Seq(
 lazy val root = project
   .in(file("."))
   .aggregate(specs2, utest, minitest, scalatest, `scalatest-scalacheck`)
-  .settings(noPublishSettings)
+  .enablePlugins(NoPublishPlugin)
   .settings(noDottySettings)
 
 lazy val specs2 = project
