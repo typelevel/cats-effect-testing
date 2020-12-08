@@ -21,11 +21,12 @@ import scala.concurrent.duration._
 import cats.implicits._
 
 object TestNondetSuite extends IOTestSuite {
+
   test("IO values should work") {
     IO(true).flatMap(b => IO(assert(b)))
   }
 
   test("Timer and ContextShift should be available for respective operations") {
-    IO.sleep(1.second) >> IO.shift >> IO(assert(true)).timeout(1.second)
+    IO.sleep(1.second) >> IO.cede >> IO(assert(true)).timeout(1.second)
   }
 }

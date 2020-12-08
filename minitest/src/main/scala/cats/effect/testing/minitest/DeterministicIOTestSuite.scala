@@ -18,25 +18,35 @@ package cats.effect.testing.minitest
 
 import scala.concurrent.ExecutionContext
 
-import cats.effect.{ContextShift, IO, Timer}
-import cats.effect.laws.util.TestContext
-import scala.concurrent.duration._
+import cats.effect.{unsafe, IO}
+import cats.effect.testkit.TestContext
 
 import minitest.api.{DefaultExecutionContext, TestSpec}
 
-abstract class DeterministicIOTestSuite extends BaseIOTestSuite[TestContext] {
-  override protected final def makeExecutionContext(): TestContext = TestContext()
+import scala.concurrent.duration._
 
+abstract class DeterministicIOTestSuite extends BaseIOTestSuite[TestContext] {
+
+  override protected final def makeExecutionContext(): TestContext = TestContext()
 
   override protected[effect] implicit def suiteEc: ExecutionContext = DefaultExecutionContext
 
-  override final implicit def ioContextShift: ContextShift[IO] =
-    executionContext.contextShift[IO](IO.ioEffect)
-  override final implicit def ioTimer: Timer[IO] = executionContext.timer[IO](IO.ioEffect)
-
-
   override protected[effect] def mkSpec(name: String, ec: TestContext, io: => IO[Unit]): TestSpec[Unit, Unit] =
     TestSpec.sync(name, _ => {
+      val scheduler = new unsafe.Scheduler {
+
+        def sleep(delay: FiniteDuration, action: Runnable): Runnable = {
+          val cancel = ec.schedule(delay, action)
+          new Runnable { def run() = cancel() }
+        }
+
+        def nowMillis() = ec.now().toMillis
+        def monotonicNanos() = ec.now().toNanos
+      }
+
+      implicit val runtime: unsafe.IORuntime =
+        unsafe.IORuntime(ec, ec, scheduler, () => ())
+
       val f = io.unsafeToFuture()
       ec.tick(365.days)
       f.value match {

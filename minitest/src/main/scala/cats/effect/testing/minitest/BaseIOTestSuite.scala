@@ -18,7 +18,7 @@ package cats.effect.testing.minitest
 
 import scala.concurrent.ExecutionContext
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.IO
 import minitest.api._
 
 
@@ -27,9 +27,6 @@ private[effect] abstract class BaseIOTestSuite[Ec <: ExecutionContext] extends A
 
   private[effect] lazy val executionContext: Ec = makeExecutionContext()
   protected[effect] implicit def suiteEc: ExecutionContext = executionContext
-
-  implicit def ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit def ioTimer: Timer[IO] = IO.timer(executionContext)
 
   protected[effect] def mkSpec(name: String, ec: Ec, io: => IO[Unit]): TestSpec[Unit, Unit]
 
