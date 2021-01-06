@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-M2", "2.12.12", "2.13.3")
+ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "2.12.12", "2.13.3")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/1.x")
 
@@ -34,11 +34,11 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "3.0.0-M4"
+val CatsEffectVersion = "3.0-65-7c98c86"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, specs2, utest, minitest, scalatest)
+  .aggregate(core, specs2, /*utest,*/ minitest, scalatest)
   .enablePlugins(NoPublishPlugin)
 
 lazy val core = project
@@ -63,7 +63,7 @@ lazy val scalatest = project
     libraryDependencies ++= Seq(
       "org.scalatest"    %% "scalatest" % "3.2.3"))
 
-lazy val utest = project
+/*lazy val utest = project
   .in(file("utest"))
   .dependsOn(core)
   .settings(
@@ -73,7 +73,7 @@ lazy val utest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.5"))
+      "com.lihaoyi" %% "utest" % "0.7.5"))*/
 
 lazy val minitest = project
   .in(file("minitest"))
@@ -84,4 +84,4 @@ lazy val minitest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.1"))
+      "io.monix" %% "minitest" % "2.9.2"))
