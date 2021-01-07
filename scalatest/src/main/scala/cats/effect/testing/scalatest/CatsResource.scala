@@ -41,8 +41,11 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   // we use the gate to prevent further step execution
   // this isn't *ideal* because we'd really like to block the specs from even starting
   // but it does work on scalajs
+  @volatile
   private var gate: Option[Deferred[F, Unit]] = None
+  @volatile
   private var value: Option[A] = None
+  @volatile
   private var shutdown: F[Unit] = ().pure[F]
 
   override def beforeAll(): Unit = {
