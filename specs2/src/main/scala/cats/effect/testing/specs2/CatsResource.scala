@@ -37,9 +37,7 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
   // but it does work on scalajs
   @volatile
   private var gate: Option[Deferred[F, Unit]] = None
-  @volatile
   private var value: Option[A] = None
-  @volatile
   private var shutdown: F[Unit] = ().pure[F]
 
   override def beforeAll(): Unit = {
@@ -80,7 +78,7 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
   def withResource[R](f: A => F[R]): F[R] =
     gate match {
       case Some(g) =>
-        g.get *> f(value.get)
+        g.get *> Sync[F].delay(value.get).flatMap(f)
 
       // specs2's runtime should prevent this case
       case None =>

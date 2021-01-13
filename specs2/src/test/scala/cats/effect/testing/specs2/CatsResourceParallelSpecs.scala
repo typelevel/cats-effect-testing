@@ -14,32 +14,19 @@
  * limitations under the License.
  */
 
-package cats.effect.testing.specs2
+package cats.effect
+package testing.specs2
 
-import cats.effect.{IO, Ref, Resource}
 import org.specs2.mutable.SpecificationLike
 
-class CatsResourceSpecs extends CatsResource[IO, Ref[IO, Int]] with SpecificationLike {
-  sequential
+import scala.concurrent.duration._
 
-  val resource: Resource[IO, Ref[IO, Int]] =
-    Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
+class CatsResourceParallelSpecs extends CatsResource[IO, Unit] with SpecificationLike {
+  // *not* sequential
 
-  "cats resource support" should {
-    "run a resource modification" in withResource { ref =>
-      ref.modify{a =>
-        (a + 1, a)
-      }.map(
-        _ must_=== 0
-      )
-    }
+  val resource = Resource.eval(IO.sleep(500.millis))
 
-    "be shared between tests" in withResource {ref =>
-      ref.modify{a =>
-        (a + 1, a)
-      }.map(
-        _ must_=== 1
-      )
-    }
+  "cats resource parallel test support" should {
+    "await the resource availability" in withResource(_ => IO.pure(ok))
   }
 }
