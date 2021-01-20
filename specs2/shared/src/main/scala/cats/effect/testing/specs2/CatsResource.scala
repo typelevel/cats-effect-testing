@@ -82,6 +82,6 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
 
       // specs2's runtime should prevent this case
       case None =>
-        Spawn[F].cede *> withResource(f)
+        Spawn[F].cede >> withResource(f)
     }
 }
