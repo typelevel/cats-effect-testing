@@ -29,12 +29,15 @@ ThisBuild / githubWorkflowTargetBranches := Seq("series/1.x")
 
 ThisBuild / homepage := Some(url("https://github.com/djspiewak/cats-effect-testing"))
 
+ThisBuild / startYear := Some(2020)
+ThisBuild / endYear := Some(2021)
+
 ThisBuild / scmInfo := Some(
   ScmInfo(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "3.0-65-7c98c86"
+val CatsEffectVersion = "3.0.0-M5"
 
 lazy val root = project
   .in(file("."))
