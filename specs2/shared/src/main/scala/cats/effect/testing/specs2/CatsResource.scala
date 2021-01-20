@@ -17,7 +17,7 @@
 package cats.effect.testing
 package specs2
 
-import cats.effect.{Async, Deferred, Resource, Sync}
+import cats.effect.{Async, Deferred, Resource, Spawn, Sync}
 import cats.syntax.all._
 import cats.effect.syntax.all._
 
@@ -82,6 +82,6 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
 
       // specs2's runtime should prevent this case
       case None =>
-        new AssertionError("Resource uninitialized").raiseError[F, R]
+        Spawn[F].cede *> withResource(f)
     }
 }
