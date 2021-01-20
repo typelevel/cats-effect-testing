@@ -41,14 +41,23 @@ val CatsEffectVersion = "3.0.0-M5"
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, specs2, /*utest,*/ minitest, scalatest)
+  .aggregate(
+    core.jvm,
+    core.js,
+    specs2.jvm,
+    specs2.js,
+    /*utest,*/
+    minitest.jvm,
+    minitest.js,
+    scalatest.jvm,
+    scalatest.js)
   .enablePlugins(NoPublishPlugin)
 
-lazy val core = project
+lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(libraryDependencies += "org.typelevel" %% "cats-effect" % CatsEffectVersion)
 
-lazy val specs2 = project
+lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .in(file("specs2"))
   .dependsOn(core)
   .settings(
@@ -57,7 +66,7 @@ lazy val specs2 = project
     libraryDependencies += "org.specs2"    %% "specs2-core" % "4.10.5")
   .settings(dottyLibrarySettings)
 
-lazy val scalatest = project
+lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
   .in(file("scalatest"))
   .dependsOn(core)
   .settings(
@@ -78,7 +87,7 @@ lazy val scalatest = project
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
       "com.lihaoyi" %% "utest" % "0.7.5"))*/
 
-lazy val minitest = project
+lazy val minitest = crossProject(JSPlatform, JVMPlatform)
   .in(file("minitest"))
   .dependsOn(core)
   .settings(
