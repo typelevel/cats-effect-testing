@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-M2", "2.12.12", "2.13.3")
+ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "2.12.12", "2.13.3")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -93,7 +93,7 @@ lazy val utest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.5"))
+      "com.lihaoyi" %% "utest" % "0.7.7"))
 
 lazy val minitest = project
   .in(file("minitest"))
@@ -104,6 +104,6 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.1"),
+      "io.monix" %% "minitest" % "2.9.2"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
