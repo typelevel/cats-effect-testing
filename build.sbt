@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "2.12.13", "2.13.4")
+ThisBuild / crossScalaVersions := Seq("3.0.0-RC1", "2.12.13", "2.13.5")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/1.x")
 
@@ -37,7 +37,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "3.0.0-M5"
+val CatsEffectVersion = "3.0.0-RC2"
 
 lazy val root = project
   .in(file("."))
@@ -46,7 +46,8 @@ lazy val root = project
     core.js,
     specs2.jvm,
     specs2.js,
-    /*utest,*/
+    utest.jvm,
+    utest.js,
     minitest.jvm,
     minitest.js,
     scalatest.jvm,
@@ -73,9 +74,9 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %% "scalatest" % "3.2.3"))
+      "org.scalatest"    %% "scalatest" % "3.2.5"))
 
-/*lazy val utest = project
+lazy val utest = crossProject(JSPlatform, JVMPlatform)
   .in(file("utest"))
   .dependsOn(core)
   .settings(
@@ -85,7 +86,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.5"))*/
+      "com.lihaoyi" %% "utest" % "0.7.7"))
 
 lazy val minitest = crossProject(JSPlatform, JVMPlatform)
   .in(file("minitest"))
@@ -96,4 +97,4 @@ lazy val minitest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.2"))
+      "io.monix" %% "minitest" % "2.9.3"))
