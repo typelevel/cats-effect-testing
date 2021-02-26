@@ -1,16 +1,16 @@
 # cats-effect-testing
 
-A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional), [scalatest](http://scalatest.org), [µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`. The Specs2 support is generalized to other `Effect`s, such as Monix `Task` and `ZIO`.
+A quickie little utility which makes it easier to write tests using [specs2](https://specs2.org) (mutable or functional), [scalatest](http://scalatest.org), [µTest](https://github.com/lihaoyi/utest) or [minitest](https://github.com/monix/minitest) where the examples are effectful within `cats.effect.IO`.
 
 ## Specs2
 
 ```scala
 import cats.effect.IO
-import cats.effect.testing.specs2.CatsIO
+import cats.effect.testing.specs2.CatsEffect
 import org.specs2.mutable.Specification
 
 // for some reason, only class works here; object will not be detected by sbt
-class ExampleSpec extends Specification with CatsIO {
+class ExampleSpec extends Specification with CatsEffect {
   "examples" should {
     "do the things" in IO {
       true must beTrue
@@ -32,10 +32,10 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-specs2" % "<version>" % Test
+libraryDependencies += "org.typelevel" %% "cats-effect-testing-specs2" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and specs2 4.7.1.
+Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on cats-effect 3.0.0-RC1 and specs2 4.10.5.
 
 ## ScalaTest
 
@@ -57,10 +57,10 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "<version>" % Test
+libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and scalatest 3.1.0.
+Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on cats-effect 3.0.0-RC1 and scalatest 3.1.0.
 
 ## ScalaTest ScalaCheck
 
@@ -109,10 +109,10 @@ class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
+libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0, scalatest-scalacheck-1-15 3.2.2.0, and scalacheck 1.15.1.
+Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on cats-effect 3.0.0-RC1, scalatest-scalacheck-1-15 3.2.2.0, and scalacheck 1.15.3.
 
 ## µTest
 
@@ -159,10 +159,10 @@ object DetSuite extends DeterministicIOTestSuite {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-utest" % "<version>" % Test
+libraryDependencies += "org.typelevel" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.1.0 and µTest 0.7.1.
+Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on cats-effect 3.0.0-RC1 and µTest 0.7.1.
 
 ## Minitest
 
@@ -200,7 +200,7 @@ object DetSuite extends DeterministicIOTestSuite {
 ### Usage
 
 ```sbt
-libraryDependencies += "com.codecommit" %% "cats-effect-testing-minitest" % "<version>" % Test
+libraryDependencies += "org.typelevel" %% "cats-effect-testing-minitest" % "<version>" % Test
 ```
 
-Published for Scala 2.13 and 2.12. Depends on cats-effect 2.0.0 and minitest 2.7.0.
+Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on cats-effect 3.0.0-RC1 and minitest 2.7.0.
