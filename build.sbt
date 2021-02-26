@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Daniel Spiewak
+ * Copyright 2021 Daniel Spiewak
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "2.12.12", "2.13.5")
+ThisBuild / crossScalaVersions := Seq("3.0.0-RC1", "2.12.13", "2.13.5")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -64,7 +64,7 @@ lazy val `scalatest-scalacheck` = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.3.0",
+      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.5.0",
       "org.scalacheck" %% "scalacheck" % "1.15.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
@@ -77,7 +77,7 @@ lazy val scalatest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatest"    %% "scalatest" % "3.2.3"),
+      "org.scalatest"    %% "scalatest" % "3.2.5"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
@@ -104,6 +104,6 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.2"),
+      "io.monix" %% "minitest" % "2.9.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
