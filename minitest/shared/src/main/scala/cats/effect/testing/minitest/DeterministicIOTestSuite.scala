@@ -45,7 +45,7 @@ abstract class DeterministicIOTestSuite extends BaseIOTestSuite[TestContext] {
       }
 
       implicit val runtime: unsafe.IORuntime =
-        unsafe.IORuntime(ec, ec, scheduler, () => ())
+        unsafe.IORuntime(ec, ec, scheduler, () => (), unsafe.IORuntimeConfig())
 
       val f = io.unsafeToFuture()
       ec.tick(365.days)

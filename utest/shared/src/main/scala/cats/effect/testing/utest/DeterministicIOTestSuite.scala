@@ -41,7 +41,7 @@ abstract class DeterministicIOTestSuite extends TestSuite {
     }
 
     implicit val runtime: unsafe.IORuntime =
-      unsafe.IORuntime(testContext, testContext, scheduler, () => ())
+      unsafe.IORuntime(testContext, testContext, scheduler, () => (), unsafe.IORuntimeConfig())
 
     runBody.flatMap {
       case io: IO[Any] =>

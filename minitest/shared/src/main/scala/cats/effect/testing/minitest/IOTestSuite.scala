@@ -33,7 +33,7 @@ abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] {
       val (blocking, blockingSD) = unsafe.IORuntime.createDefaultBlockingExecutionContext()
       val (scheduler, schedulerSD) = unsafe.IORuntime.createDefaultScheduler()
       implicit val runtime: unsafe. IORuntime =
-        unsafe.IORuntime(ec, blocking, scheduler, { () => blockingSD(); schedulerSD(); })
+        unsafe.IORuntime(ec, blocking, scheduler, { () => blockingSD(); schedulerSD(); }, unsafe.IORuntimeConfig())
 
       io.timeout(timeout).unsafeToFuture()
     })

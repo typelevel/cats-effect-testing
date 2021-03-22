@@ -16,7 +16,7 @@
 
 package cats.effect.testing.scalatest
 
-import cats.effect.unsafe.IORuntime
+import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import org.scalatest.AsyncTestSuite
 
 trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuite: AsyncTestSuite =>
@@ -24,6 +24,6 @@ trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuit
   implicit val ioRuntime: IORuntime = {
     val (scheduler, sd) = IORuntime.createDefaultScheduler()
 
-    IORuntime(executionContext, executionContext, scheduler, sd)
+    IORuntime(executionContext, executionContext, scheduler, sd, IORuntimeConfig())
   }
 }
