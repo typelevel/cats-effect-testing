@@ -42,7 +42,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "3.0.2"
+val CatsEffectVersion = "3.1.0"
 
 lazy val root = project
   .in(file("."))
