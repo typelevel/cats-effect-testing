@@ -102,4 +102,4 @@ lazy val minitest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.4"))
+      "io.monix" %% "minitest" % "2.9.5"))
