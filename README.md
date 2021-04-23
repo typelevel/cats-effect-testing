@@ -35,7 +35,7 @@ If you need an `ExecutionContext`, one is available in the `executionContext` va
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-specs2" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on Cats Effect 3.0.0 and specs2 4.10.5.
+Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and specs2 4.11.0.
 
 ## ScalaTest
 
@@ -60,7 +60,7 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on Cats Effect 3.0.0 and scalatest 3.1.0.
+Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and scalatest 3.2.6.
 
 ## ScalaTest ScalaCheck
 
@@ -112,7 +112,7 @@ class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on Cats Effect 3.0.0, scalatest-scalacheck-1-15 3.2.2.0, and scalacheck 1.15.3.
+Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0, scalatest-scalacheck-1-15 3.2.6.0, and scalacheck 1.15.3.
 
 ## µTest
 
@@ -162,7 +162,7 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on Cats Effect 3.0.0 and µTest 0.7.1.
+Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and µTest 0.7.9.
 
 ## Minitest
 
@@ -203,4 +203,4 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-minitest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC1, 2.13, 2.12, as well as ScalaJS 1.5.0. Depends on Cats Effect 3.0.0 and minitest 2.7.0.
+Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and minitest 2.9.5.
