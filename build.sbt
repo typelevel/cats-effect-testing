@@ -28,7 +28,7 @@ ThisBuild / endYear := Some(2021)
 ThisBuild / developers := List(
   Developer("djspiewak", "Daniel Spiewak", "@djspiewak", url("https://github.com/djspiewak")))
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-RC3", "2.12.13", "2.13.5")
+ThisBuild / crossScalaVersions := Seq("3.0.0-RC3", "2.12.13", "2.13.6")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/1.x")
 
