@@ -29,6 +29,40 @@ override val Timeout = 5.seconds
 
 If you need an `ExecutionContext`, one is available in the `executionContext` val.
 
+And if you need to share Cats Effect's Resource between test examples you can extend `CatsResource`, like so:
+
+```scala
+import cats.effect.{IO, Ref, Resource}
+import org.specs2.mutable.SpecificationLike
+
+class CatsResourceSpecs extends CatsResource[IO, Ref[IO, Int]] with SpecificationLike {
+  sequential
+
+  val resource: Resource[IO, Ref[IO, Int]] =
+    Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
+
+  "cats resource support" should {
+    "run a resource modification" in withResource { ref =>
+      ref.modify{ a =>
+        (a + 1, a)
+      }.map(
+        _ must_=== 0
+      )
+    }
+
+    "be shared between tests" in withResource { ref =>
+      ref.modify{ a =>
+        (a + 1, a)
+      }.map(
+        _ must_=== 1
+      )
+    }
+  }
+}
+```
+
+The Resource is acquired before the tests are run and released afterwards. A more realistic example would be to share a Resource that takes a long time to start up.
+
 ### Usage
 
 ```sbt
