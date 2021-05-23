@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.0.0-RC3", "2.12.13", "2.13.5")
+ThisBuild / crossScalaVersions := Seq("3.0.0", "2.12.13", "2.13.6")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -34,7 +34,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "2.5.0"
+val CatsEffectVersion = "2.5.1"
 
 lazy val root = project
   .in(file("."))
@@ -46,7 +46,7 @@ lazy val specs2 = project
   .settings(
     name := "cats-effect-testing-specs2",
 
-    libraryDependencies += "org.specs2"    %% "specs2-core" % "4.10.6",
+    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.12.0").cross(CrossVersion.for3Use2_13),
 
     mimaPreviousArtifacts := {
       if (isDotty.value)
@@ -54,7 +54,6 @@ lazy val specs2 = project
       else
         mimaPreviousArtifacts.value
     })
-  .settings(dottyLibrarySettings)
   .settings(libraryDependencies += "org.typelevel" %% "cats-effect" % CatsEffectVersion)
 
 lazy val `scalatest-scalacheck` = project
@@ -64,7 +63,7 @@ lazy val `scalatest-scalacheck` = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.8.0",
+      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.9.0",
       "org.scalacheck" %% "scalacheck" % "1.15.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
@@ -77,7 +76,7 @@ lazy val scalatest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatest"    %% "scalatest" % "3.2.8"),
+      "org.scalatest"    %% "scalatest" % "3.2.9"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
@@ -93,7 +92,7 @@ lazy val utest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.9"))
+      "com.lihaoyi" %% "utest" % "0.7.10"))
 
 lazy val minitest = project
   .in(file("minitest"))
@@ -104,6 +103,6 @@ lazy val minitest = project
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.typelevel" %% "cats-effect-laws" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.5"),
+      "io.monix" %% "minitest" % "2.9.6"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.1.0"))
