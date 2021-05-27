@@ -19,7 +19,6 @@ package specs2
 
 import cats.effect.{Async, Deferred, Resource, Spawn, Sync}
 import cats.syntax.all._
-import cats.effect.syntax.all._
 
 import org.specs2.specification.BeforeAfterAll
 

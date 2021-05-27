@@ -18,7 +18,6 @@ package cats.effect.testing
 package scalatest
 
 import cats.effect.{Async, Deferred, Resource, Sync}
-import cats.effect.syntax.all._
 import cats.syntax.all._
 
 import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome, Outcome}
