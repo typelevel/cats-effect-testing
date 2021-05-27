@@ -18,9 +18,11 @@ package cats.effect
 package testing
 
 import scala.concurrent.Future
+import scala.concurrent.duration.FiniteDuration
 
 trait UnsafeRun[F[_]] {
-  def unsafeToFuture[A](fa: F[A]): Future[A]
+  def unsafeToFuture[A](fa: F[A]): Future[A] = unsafeToFuture(fa, None)
+  def unsafeToFuture[A](fa: F[A], timeout: Option[FiniteDuration]): Future[A]
 }
 
 object UnsafeRun {
@@ -30,8 +32,11 @@ object UnsafeRun {
   implicit object unsafeRunForCatsIO extends UnsafeRun[IO] {
     import unsafe.implicits.global
 
+    override def unsafeToFuture[A](fa: IO[A]): Future[A] =
+      super.unsafeToFuture(fa)
+
     // TODO is it worth isolating runtimes between test runs?
-    def unsafeToFuture[A](ioa: IO[A]): Future[A] =
-      ioa.unsafeToFuture()
+    def unsafeToFuture[A](ioa: IO[A], timeout: Option[FiniteDuration]): Future[A] =
+      timeout.fold(ioa)(ioa.timeout).unsafeToFuture()
   }
 }

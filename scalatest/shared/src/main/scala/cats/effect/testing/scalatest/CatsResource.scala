@@ -37,6 +37,10 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   val resource: Resource[F, A]
 
   protected val ResourceTimeout: Duration = 10.seconds
+  protected def finiteResourceTimeout: Option[FiniteDuration] =
+    Some(ResourceTimeout) collect {
+      case fd: FiniteDuration => fd
+    }
 
   // we use the gate to prevent further step execution
   // this isn't *ideal* because we'd really like to block the specs from even starting
@@ -66,17 +70,12 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
       _ <- d.complete(())
     } yield ()
 
-    val guarded = ResourceTimeout match {
-      case fd: FiniteDuration => toRun.timeout(fd)
-      case _ => toRun
-    }
-
-    UnsafeRun[F].unsafeToFuture(guarded)
+    UnsafeRun[F].unsafeToFuture(toRun, finiteResourceTimeout)
     ()
   }
 
   override def afterAll(): Unit = {
-    Await.result(UnsafeRun[F].unsafeToFuture(shutdown), ResourceTimeout)
+    Await.result(UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout), ResourceTimeout)
 
     gate = None
     value = None
@@ -103,6 +102,6 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
       }
     }
 
-    new FutureOutcome(UnsafeRun[F].unsafeToFuture(toRun))
+    new FutureOutcome(UnsafeRun[F].unsafeToFuture(toRun, finiteResourceTimeout))
   }
 }
