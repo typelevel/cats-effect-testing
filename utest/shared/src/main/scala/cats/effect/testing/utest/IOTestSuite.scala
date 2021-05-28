@@ -17,11 +17,15 @@
 package cats.effect.testing
 package utest
 
+import cats.effect.Temporal
+
+import scala.annotation.nowarn
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
-abstract class EffectTestSuite[F[_]: UnsafeRun](implicit Tag: ClassTag[F[Any]])
+@nowarn("msg=parameter value evidence\\$1 in class EffectTestSuite is never used")
+abstract class EffectTestSuite[F[_]: Temporal: UnsafeRun](implicit Tag: ClassTag[F[Any]])
     extends _root_.utest.TestSuite {
 
   protected def timeout: FiniteDuration = 10.seconds
