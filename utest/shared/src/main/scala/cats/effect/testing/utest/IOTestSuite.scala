@@ -18,12 +18,13 @@ package cats.effect.testing
 package utest
 
 import cats.effect.Temporal
-import cats.effect.syntax.all._
 
+import scala.annotation.nowarn
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
+@nowarn("msg=parameter value evidence\\$1 in class EffectTestSuite is never used")
 abstract class EffectTestSuite[F[_]: Temporal: UnsafeRun](implicit Tag: ClassTag[F[Any]])
     extends _root_.utest.TestSuite {
 
@@ -32,7 +33,7 @@ abstract class EffectTestSuite[F[_]: Temporal: UnsafeRun](implicit Tag: ClassTag
 
   override def utestWrap(path: Seq[String], runBody: => Future[Any])(implicit ec: ExecutionContext): Future[Any] = {
     runBody flatMap {
-      case Tag(io) => UnsafeRun[F].unsafeToFuture(io.timeout(timeout))
+      case Tag(io) => UnsafeRun[F].unsafeToFuture(io, Some(timeout))
       case other if allowNonIOTests => Future.successful(other)
       case other => throw new RuntimeException(s"Test body must return an IO value. Got $other")
     }

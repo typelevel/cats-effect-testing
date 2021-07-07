@@ -17,10 +17,14 @@
 package cats.effect
 package testing
 
+import scala.annotation.nowarn
 import scala.concurrent.Future
+import scala.concurrent.duration.FiniteDuration
 
 trait UnsafeRun[F[_]] {
   def unsafeToFuture[A](fa: F[A]): Future[A]
+  def unsafeToFuture[A](fa: F[A], @nowarn("msg=never used") timeout: Option[FiniteDuration]): Future[A]
+    = unsafeToFuture(fa) // For binary compatibility
 }
 
 object UnsafeRun {
@@ -30,8 +34,11 @@ object UnsafeRun {
   implicit object unsafeRunForCatsIO extends UnsafeRun[IO] {
     import unsafe.implicits.global
 
+    override def unsafeToFuture[A](ioa: IO[A]): Future[A] =
+      unsafeToFuture(ioa, None)
+
     // TODO is it worth isolating runtimes between test runs?
-    def unsafeToFuture[A](ioa: IO[A]): Future[A] =
-      ioa.unsafeToFuture()
+    override def unsafeToFuture[A](ioa: IO[A], timeout: Option[FiniteDuration]): Future[A] =
+      timeout.fold(ioa)(ioa.timeout).unsafeToFuture()
   }
 }

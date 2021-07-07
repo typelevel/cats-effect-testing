@@ -28,14 +28,16 @@ import scala.concurrent.duration._
 trait CatsEffect {
 
   protected val Timeout: Duration = 10.seconds
+  protected def finiteTimeout: Option[FiniteDuration] =
+    Some(Timeout) collect {
+      case fd: FiniteDuration => fd
+    }
 
   implicit def effectAsExecution[F[_]: UnsafeRun, R](implicit R: AsResult[R]): AsExecution[F[R]] = new AsExecution[F[R]] {
     def execute(t: => F[R]): Execution =
       Execution
-        .withEnvAsync(_ => UnsafeRun[F].unsafeToFuture(t))
-        .copy(timeout = Some(Timeout) collect {
-          case fd: FiniteDuration => fd
-        })
+        .withEnvAsync(_ => UnsafeRun[F].unsafeToFuture(t, finiteTimeout))
+        .copy(timeout = finiteTimeout)
   }
 
   implicit def resourceAsExecution[F[_]: UnsafeRun, R](implicit F: MonadCancel[F, Throwable], R: AsResult[R]): AsExecution[Resource[F, R]] = new AsExecution[Resource[F, R]] {
