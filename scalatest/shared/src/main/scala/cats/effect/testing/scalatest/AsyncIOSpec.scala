@@ -21,9 +21,7 @@ import org.scalatest.AsyncTestSuite
 
 trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuite: AsyncTestSuite =>
 
-  implicit val ioRuntime: IORuntime = {
-    val (scheduler, sd) = IORuntime.createDefaultScheduler()
+  implicit val ioRuntime: IORuntime =
+    IORuntime(executionContext, executionContext, IORuntime.global.scheduler, () => (), IORuntimeConfig())
 
-    IORuntime(executionContext, executionContext, scheduler, sd, IORuntimeConfig())
-  }
 }
