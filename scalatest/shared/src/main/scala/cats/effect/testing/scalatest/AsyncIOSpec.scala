@@ -16,12 +16,22 @@
 
 package cats.effect.testing.scalatest
 
+import cats.effect.IO
 import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
+import org.scalactic.source.Position
 import org.scalatest.AsyncTestSuite
+import org.scalatest.enablers.Retrying
+import org.scalatest.time.Span
 
 trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuite: AsyncTestSuite =>
 
   implicit val ioRuntime: IORuntime =
     IORuntime(executionContext, executionContext, IORuntime.global.scheduler, () => (), IORuntimeConfig())
 
+  implicit def ioRetrying[T]: Retrying[IO[T]] = new Retrying[IO[T]] {
+    override def retry(timeout: Span, interval: Span, pos: Position)(fun: => IO[T]): IO[T] =
+      IO.fromFuture(
+        IO(Retrying.retryingNatureOfFutureT[T](executionContext).retry(timeout, interval, pos)(fun.unsafeToFuture())),
+      )
+  }
 }
