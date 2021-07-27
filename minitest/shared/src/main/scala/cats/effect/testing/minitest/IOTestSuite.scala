@@ -17,24 +17,22 @@
 package cats.effect.testing.minitest
 
 import cats.effect.{unsafe, IO}
+import cats.effect.testing.RuntimePlatform
 
 import minitest.api._
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
-abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] {
+abstract class IOTestSuite extends BaseIOTestSuite[ExecutionContext] with RuntimePlatform {
   protected def makeExecutionContext(): ExecutionContext = DefaultExecutionContext
 
   protected def timeout: FiniteDuration = 10.seconds
 
   protected[effect] def mkSpec(name: String, ec: ExecutionContext, io: => IO[Unit]): TestSpec[Unit, Unit] = {
     TestSpec.async[Unit](name, { _ =>
-      val (blocking, blockingSD) = unsafe.IORuntime.createDefaultBlockingExecutionContext()
-      val (scheduler, schedulerSD) = unsafe.IORuntime.createDefaultScheduler()
-      implicit val runtime: unsafe. IORuntime =
-        unsafe.IORuntime(ec, blocking, scheduler, { () => blockingSD(); schedulerSD(); }, unsafe.IORuntimeConfig())
-
+      // TODO cleanup
+      implicit val runtime: unsafe.IORuntime = createIORuntime(ec)
       io.timeout(timeout).unsafeToFuture()
     })
   }
