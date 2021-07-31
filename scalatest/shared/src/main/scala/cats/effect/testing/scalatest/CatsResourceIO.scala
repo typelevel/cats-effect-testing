@@ -18,10 +18,27 @@ package cats.effect.testing
 package scalatest
 
 import cats.effect.{Async, IO}
+import cats.effect.unsafe.IORuntime
 
 import org.scalatest.FixtureAsyncTestSuite
 
-trait CatsResourceIO[A] extends CatsResource[IO, A] { this: FixtureAsyncTestSuite =>
+import scala.concurrent.Future
+import scala.concurrent.duration._
+
+trait CatsResourceIO[A] extends CatsResource[IO, A] with RuntimePlatform { this: FixtureAsyncTestSuite =>
+
   final def ResourceAsync = Async[IO]
-  final def ResourceUnsafeRun = UnsafeRun[IO]
+
+  final def ResourceUnsafeRun = _ResourceUnsafeRun
+
+  private lazy val _ResourceUnsafeRun =
+    new UnsafeRun[IO] {
+      private implicit val runtime: IORuntime = createIORuntime(executionContext)
+
+      override def unsafeToFuture[B](ioa: IO[B]): Future[B] =
+        unsafeToFuture(ioa, None)
+
+      override def unsafeToFuture[B](ioa: IO[B], timeout: Option[FiniteDuration]): Future[B] =
+        timeout.fold(ioa)(ioa.timeout).unsafeToFuture()
+    }
 }

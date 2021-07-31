@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "1.0"
+ThisBuild / baseVersion := "1.2"
 ThisBuild / strictSemVer := true
 
 ThisBuild / organization := "org.typelevel"
@@ -61,14 +61,14 @@ lazy val root = project
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .settings(libraryDependencies += "org.typelevel" %% "cats-effect" % CatsEffectVersion)
+  .settings(libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .in(file("specs2"))
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.12.3").cross(CrossVersion.for3Use2_13))
+    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.12.3").cross(CrossVersion.for3Use2_13))
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
   .in(file("scalatest"))
@@ -77,7 +77,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %% "scalatest" % "3.2.9"))
+      "org.scalatest"    %%% "scalatest" % "3.2.9"))
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform)
   .in(file("utest"))
@@ -88,8 +88,8 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform)
     testFrameworks += new TestFramework("utest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %% "utest" % "0.7.10"))
+      "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
+      "com.lihaoyi" %%% "utest" % "0.7.10"))
 
 lazy val minitest = crossProject(JSPlatform, JVMPlatform)
   .in(file("minitest"))
@@ -99,5 +99,5 @@ lazy val minitest = crossProject(JSPlatform, JVMPlatform)
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect-testkit" % CatsEffectVersion,
-      "io.monix" %% "minitest" % "2.9.6"))
+      "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
+      "io.monix" %%% "minitest" % "2.9.6"))

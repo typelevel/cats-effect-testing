@@ -22,7 +22,6 @@ import cats.syntax.all._
 
 import org.specs2.specification.BeforeAfterAll
 
-import scala.concurrent.Await
 import scala.concurrent.duration._
 
 abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll with CatsEffect {
@@ -66,7 +65,7 @@ abstract class CatsResource[F[_]: Async: UnsafeRun, A] extends BeforeAfterAll wi
   }
 
   override def afterAll(): Unit = {
-    Await.result(UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout), ResourceTimeout)
+    UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout)
 
     gate = None
     value = None

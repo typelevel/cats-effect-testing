@@ -20,7 +20,7 @@ import cats.effect.{IO, Ref, Resource}
 import cats.implicits._
 import org.specs2.mutable.Specification
 
-class CatsEffectSpecs extends Specification with CatsEffect {
+class CatsEffectSpecs extends Specification with CatsEffect with CatsEffectSpecsPlatform {
 
   "cats effect specifications" should {
     "run a non-effectful test" in {
@@ -42,17 +42,7 @@ class CatsEffectSpecs extends Specification with CatsEffect {
       }
     }
 
-    "really execute effects" in {
-      var gate = false
-
-      "forcibly attempt to get the deferred value" in {
-        IO.cede.untilM_(IO(gate)).as(ok)
-      }
-
-      "complete the deferred value inside IO context" in {
-        (IO { gate = true }).as(ok)
-      }
-    }
+    platformSpecs
 
     // "timeout a failing test" in (IO.never: IO[Boolean])
   }
