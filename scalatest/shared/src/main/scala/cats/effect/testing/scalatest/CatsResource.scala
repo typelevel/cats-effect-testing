@@ -22,7 +22,6 @@ import cats.syntax.all._
 
 import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome, Outcome}
 
-import scala.concurrent.Await
 import scala.concurrent.duration._
 
 trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSuite =>
@@ -74,7 +73,7 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   }
 
   override def afterAll(): Unit = {
-    Await.result(UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout), ResourceTimeout)
+    UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout)
 
     gate = None
     value = None
