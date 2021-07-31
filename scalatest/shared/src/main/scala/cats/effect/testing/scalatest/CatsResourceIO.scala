@@ -29,7 +29,9 @@ trait CatsResourceIO[A] extends CatsResource[IO, A] with RuntimePlatform { this:
 
   final def ResourceAsync = Async[IO]
 
-  final val ResourceUnsafeRun =
+  final def ResourceUnsafeRun = _ResourceUnsafeRun
+
+  private lazy val _ResourceUnsafeRun =
     new UnsafeRun[IO] {
       private implicit val runtime: IORuntime = createIORuntime(executionContext)
 
