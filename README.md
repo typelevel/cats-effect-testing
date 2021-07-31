@@ -71,6 +71,8 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-specs2" % "<versi
 
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and specs2 4.11.0.
 
+Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
+
 ## ScalaTest
 
 ```scala
@@ -95,6 +97,8 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest" % "<ve
 ```
 
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and scalatest 3.2.6.
+
+Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
 ## ScalaTest ScalaCheck
 
@@ -148,6 +152,8 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest-scalach
 
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0, scalatest-scalacheck-1-15 3.2.6.0, and scalacheck 1.15.3.
 
+Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
+
 ## µTest
 
 ```scala
@@ -198,6 +204,8 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-utest" % "<versio
 
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and µTest 0.7.9.
 
+Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
+
 ## Minitest
 
 Minitest is very similar to uTest, but being strongly typed, there's no need to support
@@ -238,3 +246,5 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-minitest" % "<ver
 ```
 
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and minitest 2.9.5.
+
+Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
