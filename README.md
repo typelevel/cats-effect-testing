@@ -100,60 +100,6 @@ Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on 
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
-## ScalaTest ScalaCheck
-
-The module provides an instance of the `org.scalatestplus.scalacheck.CheckerAsserting`, which can be used with any type of effect that has an instance of `cats.effect.Effect`: `IO`, `EitherT[IO, Throwable, *]`, and so on.
-
-```scala
-import cats.data.EitherT
-import cats.effect.testing.scalatest.AsyncIOSpec
-import cats.effect.{IO, Sync}
-import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.scalacheck.{CheckerAsserting, ScalaCheckPropertyChecks}
-
-class MySpec extends AsyncIOSpec with Matchers with ScalaCheckPropertyChecks {
-
-  "My IO Code" - {
-
-    "works with effect-full property-based testing" in {
-      forAll { (l1: List[Int], l2: List[Int]) =>
-        IO.delay(l1.size + l2.size shouldBe (l1 ::: l2).size)
-      }
-    }
-  
-    implicit def ioCheckingAsserting[A]: CheckerAsserting[IO[A]] { type Result = IO[Unit] } =
-      new EffectCheckerAsserting
-  }
-  
-  "My EitherT[IO, Throwable, A] code" - {
-  
-    type Eff[A] = EitherT[IO, Throwable, A]
-
-    "works with effect-full property-based testing" in {
-      val check = forAll { (l1: List[Int], l2: List[Int]) =>
-        Sync[Eff].delay(l1.size + l2.size shouldBe (l1 ::: l2).size)
-      }
-
-      check.leftSemiflatMap[Unit](IO.raiseError).merge.assertNoException
-    }
-
-    implicit def checkingAsserting[A]: CheckerAsserting[Eff[A]] { type Result = Eff[Unit] } =
-      new EffectCheckerAsserting
-  }
-
-}
-
-```
-### Usage
-
-```sbt
-libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest-scalacheck" % "<version>" % Test
-```
-
-Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0, scalatest-scalacheck-1-15 3.2.6.0, and scalacheck 1.15.3.
-
-Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
-
 ## µTest
 
 ```scala
@@ -248,3 +194,9 @@ libraryDependencies += "org.typelevel" %% "cats-effect-testing-minitest" % "<ver
 Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and minitest 2.9.5.
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
+
+## Similar projects
+
+### scalacheck-effect
+
+[scalacheck-effect](https://github.com/typelevel/scalacheck-effect) is a library that extends the functionality of [ScalaCheck](https://scalacheck.org) to support "effectful" properties. An effectful property is one that evaluates each sample in some type constructor `F[_]`.
