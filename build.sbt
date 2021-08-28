@@ -61,7 +61,9 @@ lazy val root = project
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .settings(libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
+  .settings(
+    name := "cats-effect-testing-core",
+    libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .in(file("specs2"))
