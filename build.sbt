@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "1.2"
+ThisBuild / baseVersion := "1.3"
 ThisBuild / strictSemVer := true
 
 ThisBuild / organization := "org.typelevel"
@@ -61,7 +61,15 @@ lazy val root = project
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
-  .settings(libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
+  .settings(
+    name := "cats-effect-testing-core",
+    mimaPreviousArtifacts ~= {
+      _.filterNot { moduleId =>
+        val v = moduleId.revision
+        v.startsWith("1.0") || v.startsWith("1.1") || v.startsWith("1.2")
+      }
+    },
+    libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .in(file("specs2"))
