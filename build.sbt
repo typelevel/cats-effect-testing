@@ -63,6 +63,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(
     name := "cats-effect-testing-core",
+    mimaPreviousArtifacts := Set(),
     libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
