@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "1.3"
+ThisBuild / baseVersion := "1.4"
 ThisBuild / strictSemVer := true
 
 ThisBuild / organization := "org.typelevel"
