@@ -17,10 +17,12 @@
 package cats.effect.testing
 package specs2
 
-import cats.effect.{MonadCancel, Resource}
+import cats.effect.{IO, MonadCancel, Resource}
+import cats.effect.testkit.TestControl
 import cats.syntax.all._
 
-import org.specs2.execute.AsResult
+import org.specs2.execute.{AsResult, Result}
+import org.specs2.matcher.{Expectable, Matcher, MatchResult}
 import org.specs2.specification.core.{AsExecution, Execution}
 
 import scala.concurrent.duration._
@@ -44,4 +46,20 @@ trait CatsEffect {
     def execute(t: => Resource[F, R]): Execution =
       effectAsExecution[F, R].execute(t.use(_.pure[F]))
   }
+
+  def execute[A](body: (TestControl, () => Option[Either[Throwable, A]]) => Result): Matcher[IO[A]] =
+    new Matcher[IO[A]] {
+      def apply[B <: IO[A]](exp: Expectable[B]): MatchResult[B] = {
+        val control = TestControl()
+        val future = (exp.value: IO[A]).unsafeToFuture()(control.runtime)
+
+        val r = body(control, () => future.value.map(_.toEither))
+
+        result(
+          r.isSuccess,
+          s"${exp.description} fully executed: ${r.message}",
+          s"${exp.description} failed to execute: ${r.message}",
+          exp)
+      }
+    }
 }

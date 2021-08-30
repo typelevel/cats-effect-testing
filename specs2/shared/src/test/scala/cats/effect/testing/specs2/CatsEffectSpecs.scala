@@ -18,7 +18,10 @@ package cats.effect.testing.specs2
 
 import cats.effect.{IO, Ref, Resource}
 import cats.implicits._
+
 import org.specs2.mutable.Specification
+
+import scala.concurrent.duration._
 
 class CatsEffectSpecs extends Specification with CatsEffect with CatsEffectSpecsPlatform {
 
@@ -39,6 +42,49 @@ class CatsEffectSpecs extends Specification with CatsEffect with CatsEffectSpecs
     "resource must be live for use" in {
       Resource.make(Ref[IO].of(true))(_.set(false)) evalMap { r =>
         r.get.map(_ must beTrue)
+      }
+    }
+
+    "execute a simple test with mock time" in {
+      var first = false
+      var second = false
+      var third = false
+      val wait = IO.sleep(1.hour)
+
+      val program = for {
+        _ <- IO { first = true }
+        _ <- wait
+        _ <- IO { second = true }
+        _ <- wait
+        _ <- IO { third = true }
+      } yield 42
+
+      program must execute { (control, result) =>
+        result() must beNone
+
+        first must beFalse
+        second must beFalse
+        third must beFalse
+
+        control.tick()
+
+        first must beTrue
+        second must beFalse
+        third must beFalse
+
+        control.advanceAndTick(1.hour)
+
+        first must beTrue
+        second must beTrue
+        third must beFalse
+
+        control.advanceAndTick(1.hour)
+
+        first must beTrue
+        second must beTrue
+        third must beTrue
+
+        result() must beSome(beRight(42))
       }
     }
 
