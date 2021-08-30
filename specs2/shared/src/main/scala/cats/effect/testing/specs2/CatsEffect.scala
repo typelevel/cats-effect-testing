@@ -22,7 +22,7 @@ import cats.effect.testkit.TestControl
 import cats.syntax.all._
 
 import org.specs2.execute.{AsResult, Result}
-import org.specs2.matcher.{Expectable, Matcher, MatchResult}
+import org.specs2.matcher.{Expectable, Matcher, MatchFailureException, MatchResult}
 import org.specs2.specification.core.{AsExecution, Execution}
 
 import scala.concurrent.duration._
@@ -48,17 +48,35 @@ trait CatsEffect {
   }
 
   def execute[A](body: (TestControl, () => Option[Either[Throwable, A]]) => Result): Matcher[IO[A]] =
+    executeWithOptionSeed(None)(body)
+
+  def executeWithSeed[A](
+      seed: String)(
+      body: (TestControl, () => Option[Either[Throwable, A]]) => Result)
+      : Matcher[IO[A]] =
+    executeWithOptionSeed(Some(seed))(body)
+
+  private[this] def executeWithOptionSeed[A](
+      seed: Option[String])(
+      body: (TestControl, () => Option[Either[Throwable, A]]) => Result)
+      : Matcher[IO[A]] =
     new Matcher[IO[A]] {
       def apply[B <: IO[A]](exp: Expectable[B]): MatchResult[B] = {
-        val control = TestControl()
-        val future = (exp.value: IO[A]).unsafeToFuture()(control.runtime)
+        val control = TestControl(seed = seed)
+        val future = exp.value.unsafeToFuture()(control.runtime)
 
-        val r = body(control, () => future.value.map(_.toEither))
+        val r = try {
+          body(control, () => future.value.map(_.toEither))
+        } catch {
+          case mfe: MatchFailureException[_] =>
+            val f2 = mfe.failure.updateMessage(m => s"$m (seed = ${control.seed})")
+            throw new MatchFailureException(f2)
+        }
 
         result(
           r.isSuccess,
           s"${exp.description} fully executed: ${r.message}",
-          s"${exp.description} failed to execute: ${r.message}",
+          s"${exp.description} failed to execute: ${r.message} (seed = ${control.seed})",
           exp)
       }
     }
