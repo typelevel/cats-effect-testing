@@ -46,7 +46,7 @@ abstract class DeterministicIOTestSuite extends TestSuite {
     runBody.flatMap {
       case io: IO[Any] =>
         val f = io.unsafeToFuture()
-        testContext.tickAll(365.days)
+        testContext.tickAll()
         assert(testContext.state.tasks.isEmpty)
         f.value match {
           case Some(_) => f
