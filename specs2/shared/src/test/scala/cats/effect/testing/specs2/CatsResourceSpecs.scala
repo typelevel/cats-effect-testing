@@ -30,7 +30,7 @@ class CatsResourceSpecs extends CatsResource[IO, Ref[IO, Int]] with Specificatio
       ref.modify{a =>
         (a + 1, a)
       }.map(
-        _ must_=== 0
+        _ === 0
       )
     }
 
@@ -38,7 +38,7 @@ class CatsResourceSpecs extends CatsResource[IO, Ref[IO, Int]] with Specificatio
       ref.modify{a =>
         (a + 1, a)
       }.map(
-        _ must_=== 1
+        _ === 1
       )
     }
   }

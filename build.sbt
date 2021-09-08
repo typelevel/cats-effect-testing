@@ -43,6 +43,8 @@ ThisBuild / scmInfo := Some(
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
 val CatsEffectVersion = "3.2.8"
+val specs2Version = "4.12.10"
+val specs2DottyVersion = "5.0.0-RC-09"
 
 lazy val root = project
   .in(file("."))
@@ -76,7 +78,12 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.12.10").cross(CrossVersion.for3Use2_13))
+    libraryDependencies += {
+      if (isDotty.value)
+        "org.specs2" %%% "specs2-core" % specs2DottyVersion
+      else
+        "org.specs2" %%% "specs2-core" % specs2Version
+    })
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
   .in(file("scalatest"))
