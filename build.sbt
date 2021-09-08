@@ -43,7 +43,7 @@ ThisBuild / scmInfo := Some(
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
 val CatsEffectVersion = "3.2.8"
-val specs2Version = "4.12.10"
+val specs2Version = "4.12.11"
 val specs2DottyVersion = "5.0.0-RC-09"
 
 lazy val root = project

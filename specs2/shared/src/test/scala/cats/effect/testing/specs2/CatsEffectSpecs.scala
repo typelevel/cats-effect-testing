@@ -44,8 +44,9 @@ class CatsEffectSpecs extends Specification with CatsEffect with CatsEffectSpecs
 
     platformSpecs
 
-    "timeout a failing test" in pendingUntilFixed("this is ok") {
-      IO.never: IO[Boolean]
-    }
+    // pendingUntilFixed only works with specs2-5.x here
+    // "timeout a failing test" in pendingUntilFixed("this is ok") {
+    //   IO.never: IO[Boolean]
+    // }
   }
 }
