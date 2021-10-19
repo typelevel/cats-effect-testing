@@ -34,7 +34,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "2.5.1"
+val CatsEffectVersion = "2.5.4"
 
 lazy val root = project
   .in(file("."))
@@ -46,7 +46,7 @@ lazy val specs2 = project
   .settings(
     name := "cats-effect-testing-specs2",
 
-    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.12.0").cross(CrossVersion.for3Use2_13),
+    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.12.12").cross(CrossVersion.for3Use2_13),
 
     mimaPreviousArtifacts := {
       if (isDotty.value)
@@ -63,8 +63,8 @@ lazy val `scalatest-scalacheck` = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.9.0",
-      "org.scalacheck" %% "scalacheck" % "1.15.4"),
+      "org.scalatestplus" %% "scalacheck-1-15" % "3.2.10.0",
+      "org.scalacheck" %% "scalacheck" % "1.15.3"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value - ("com.codecommit" %% name.value % "0.3.0")
   )
@@ -76,7 +76,7 @@ lazy val scalatest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatest"    %% "scalatest" % "3.2.9"),
+      "org.scalatest"    %% "scalatest" % "3.2.10"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
