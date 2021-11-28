@@ -24,6 +24,7 @@ import utest.TestSuite
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
 
+@deprecated("use TestControl from cats-effect-testkit", "1.4.0")
 abstract class DeterministicIOTestSuite extends TestSuite {
   protected val testContext: TestContext = TestContext()
   protected def allowNonIOTests: Boolean = false
@@ -46,7 +47,7 @@ abstract class DeterministicIOTestSuite extends TestSuite {
     runBody.flatMap {
       case io: IO[Any] =>
         val f = io.unsafeToFuture()
-        testContext.tickAll(365.days)
+        testContext.tickAll()
         assert(testContext.state.tasks.isEmpty)
         f.value match {
           case Some(_) => f
