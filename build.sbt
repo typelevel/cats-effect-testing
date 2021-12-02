@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "1.3"
+ThisBuild / baseVersion := "1.4"
 ThisBuild / strictSemVer := true
 
 ThisBuild / organization := "org.typelevel"
@@ -42,7 +42,7 @@ ThisBuild / scmInfo := Some(
     url("https://github.com/djspiewak/cats-effect-testing"),
     "git@github.com:djspiewak/cats-effect-testing.git"))
 
-val CatsEffectVersion = "3.2.9"
+val CatsEffectVersion = "3.3.0"
 
 lazy val root = project
   .in(file("."))
@@ -76,7 +76,9 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.13.0").cross(CrossVersion.for3Use2_13))
+    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.13.1")
+      .cross(CrossVersion.for3Use2_13)
+      .exclude("org.scala-js", "scala-js-macrotask-executor_sjs1_2.13"))
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
   .in(file("scalatest"))
@@ -97,7 +99,9 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %%% "utest" % "0.7.10"))
+      "com.lihaoyi" %%% "utest" % "0.7.10"),
+
+    Test / scalacOptions -= "-Xfatal-warnings")
 
 lazy val minitest = crossProject(JSPlatform, JVMPlatform)
   .in(file("minitest"))
@@ -108,4 +112,6 @@ lazy val minitest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "io.monix" %%% "minitest" % "2.9.6"))
+      "io.monix" %%% "minitest" % "2.9.6"),
+
+    Test / scalacOptions -= "-Xfatal-warnings")

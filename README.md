@@ -69,7 +69,7 @@ The Resource is acquired before the tests are run and released afterwards. A mor
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-specs2" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and specs2 4.11.0.
+Published for Scala 3.1+, 2.13, 2.12, as well as ScalaJS 1.7+. Depends on Cats Effect 3.1+ and Specs2 4.13.x. Specs2 5.0 is not yet supported.
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
@@ -96,7 +96,7 @@ class MySpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-scalatest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and scalatest 3.2.6.
+Published for Scala 3.1+, 2.13, 2.12, as well as ScalaJS 1.7.x. Depends on Cats Effect 3.1+ and scalatest 3.2.6.
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
@@ -107,35 +107,14 @@ import scala.concurrent.duration._
 import utest._
 import cats.implicits._
 import cats.effect.IO
-import cats.effect.testing.utest.{IOTestSuite, DeterministicIOTestSuite}
+import cats.effect.testing.utest.IOTestSuite
 
-// IOTestSuite uses real ExecutionContext for async operations
 object SimpleSuite extends IOTestSuite {
   override val timeout = 1.second // Default timeout is 10 seconds
 
   val tests = Tests {
     test("do the thing") {
       IO(assert(true))
-    }
-  }
-}
-
-// DeterministicIOTestSuite simulates time with TestContext from cats-effect-laws
-// package. That allows to simulate long timeouts and have async operations
-// without actually slowing down your test suite, but it cannot use operations
-// that are hard-wired to do real async calls
-object DetSuite extends DeterministicIOTestSuite {
-  // By default, both types of suite prevents using non-IO return values.
-  // I recommend separating effectful and pure suites altogether, but
-  // this can be overriden like so:
-  override val allowNonIOTests = true
-  val tests = Tests {
-    test("Simulated time!") {
-      IO.sleep(8.hours) >> IO(assert(!"life".isEmpty))
-    }
-    
-    test("Non-IO tests") {
-     assert(true)
     }
   }
 }
@@ -148,7 +127,7 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-utest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and µTest 0.7.9.
+Published for Scala 3.1+, 2.13, 2.12, as well as ScalaJS 1.7.x. Depends on Cats Effect 3.1+ and µTest 0.7.9.
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
@@ -161,10 +140,8 @@ non-IO tests
 import scala.concurrent.duration._
 import cats.implicits._
 import cats.effect.IO
-import cats.effect.testing.minitest.{IOTestSuite, DeterministicIOTestSuite}
+import cats.effect.testing.minitest.IOTestSuite
 
-// IOTestSuite uses real ExecutionContext for async operations
-// (can be overriden by reimplementing makeExecutionContext)
 object SimpleSuite extends IOTestSuite {
   override val timeout = 1.second // Default timeout is 10 seconds
 
@@ -172,17 +149,6 @@ object SimpleSuite extends IOTestSuite {
     IO(assert(true))
   }
 }
-
-// DeterministicIOTestSuite simulates time with TestContext from cats-effect-laws
-// package. That allows to simulate long timeouts and have async operations
-// without actually slowing down your test suite, but it cannot use operations
-// that are hard-wired to do real async calls
-object DetSuite extends DeterministicIOTestSuite {
-  test("Simulated time!") {
-    IO.sleep(8.hours) >> IO(assert(!"life".isEmpty))
-  }
-}
-
 ```
 
 ### Usage
@@ -191,7 +157,7 @@ object DetSuite extends DeterministicIOTestSuite {
 libraryDependencies += "org.typelevel" %% "cats-effect-testing-minitest" % "<version>" % Test
 ```
 
-Published for Scala 3.0.0-RC3, 2.13, 2.12, as well as ScalaJS 1.5.1. Depends on Cats Effect 3.1.0 and minitest 2.9.5.
+Published for Scala 3.1+, 2.13, 2.12, as well as ScalaJS 1.7.x. Depends on Cats Effect 3.1+ and minitest 2.9.5.
 
 Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
