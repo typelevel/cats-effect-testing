@@ -38,6 +38,13 @@ class IOSpecTests extends AsyncFreeSpec with AsyncIOSpec with Matchers {
     "IO assert Exception" in {
       IO.raiseError(AError).assertThrows[AError.type]
     }
+
+    "IO assert Exception with message" in {
+      val expectedMessage = "foo"
+      IO.raiseError(AErrorWithMessage(expectedMessage))
+        .assertThrowsWithMessage[AErrorWithMessage](expectedMessage)
+    }
+
   }
 
   "Effect assertions" - {
@@ -60,3 +67,6 @@ class IOSpecTests extends AsyncFreeSpec with AsyncIOSpec with Matchers {
 }
 
 case object AError extends Throwable
+case class AErrorWithMessage(message: String) extends Throwable {
+  override def getMessage: String = message
+}
