@@ -63,5 +63,32 @@ trait AssertingSyntax {
             fail(s"Expected an exception of type ${ct.runtimeClass.getName} but got a result: $a")
           )
       }
+
+    /**
+     * Asserts that the `F[A]` fails with an exception of type `E` and an expected error message.
+     */
+    def assertThrowsWithMessage[E <: Throwable](expectedMessage: String)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
+      self.attempt.flatMap {
+        case Left(e: E) =>
+          if (e.getMessage == expectedMessage)
+            F.pure(Succeeded: Assertion)
+          else
+            F.delay(
+              fail(
+                s"Expected exception to have message '$expectedMessage' but got: ${e.getMessage}"
+              )
+            )
+        case Left(t) =>
+          F.delay(
+            fail(
+              s"Expected an exception of type ${ct.runtimeClass.getName} but got an exception: $t"
+            )
+          )
+        case Right(a) =>
+          F.delay(
+            fail(s"Expected an exception of type ${ct.runtimeClass.getName} but got a result: $a")
+          )
+      }
+
   }
 }
