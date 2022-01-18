@@ -16,59 +16,23 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / baseVersion := "1.4"
-ThisBuild / strictSemVer := true
-
-ThisBuild / organization := "org.typelevel"
-ThisBuild / organizationName := "Typelevel"
-
+ThisBuild / tlBaseVersion := "1.4"
 ThisBuild / startYear := Some(2020)
-ThisBuild / endYear := Some(2021)
-
-ThisBuild / developers := List(
-  Developer("djspiewak", "Daniel Spiewak", "@djspiewak", url("https://github.com/djspiewak")))
+ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
 ThisBuild / crossScalaVersions := Seq("3.1.0", "2.12.15", "2.13.8")
 
-ThisBuild / githubWorkflowTargetBranches := Seq("series/1.x")
-
-ThisBuild / homepage := Some(url("https://github.com/djspiewak/cats-effect-testing"))
-
-ThisBuild / startYear := Some(2020)
-ThisBuild / endYear := Some(2021)
-
-ThisBuild / scmInfo := Some(
-  ScmInfo(
-    url("https://github.com/djspiewak/cats-effect-testing"),
-    "git@github.com:djspiewak/cats-effect-testing.git"))
+ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
 val CatsEffectVersion = "3.3.4"
 
-lazy val root = project
-  .in(file("."))
-  .aggregate(
-    core.jvm,
-    core.js,
-    specs2.jvm,
-    specs2.js,
-    utest.jvm,
-    utest.js,
-    minitest.jvm,
-    minitest.js,
-    scalatest.jvm,
-    scalatest.js)
-  .enablePlugins(NoPublishPlugin)
+lazy val root = tlCrossRootProject
+  .aggregate(core, specs2, utest, minitest, scalatest)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(
     name := "cats-effect-testing-core",
-    mimaPreviousArtifacts ~= {
-      _.filterNot { moduleId =>
-        val v = moduleId.revision
-        v.startsWith("1.0") || v.startsWith("1.1") || v.startsWith("1.2")
-      }
-    },
     libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
