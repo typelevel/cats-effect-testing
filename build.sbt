@@ -33,6 +33,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .in(file("core"))
   .settings(
     name := "cats-effect-testing-core",
+    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap,
     libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
