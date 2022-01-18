@@ -21,6 +21,7 @@ ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
 ThisBuild / crossScalaVersions := Seq("3.1.0", "2.12.15", "2.13.8")
+ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
