@@ -99,7 +99,7 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %%% "utest" % "0.7.10"),
+      "com.lihaoyi" %%% "utest" % "0.7.11"),
 
     Test / scalacOptions -= "-Xfatal-warnings")
 
