@@ -20,12 +20,12 @@ ThisBuild / tlBaseVersion := "1.4"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
-ThisBuild / crossScalaVersions := Seq("3.1.0", "2.12.15", "2.13.8")
+ThisBuild / crossScalaVersions := Seq("3.1.1", "2.12.15", "2.13.8")
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
-val CatsEffectVersion = "3.3.4"
+val CatsEffectVersion = "3.3.5"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
@@ -53,7 +53,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %%% "scalatest" % "3.2.10"))
+      "org.scalatest"    %%% "scalatest" % "3.2.11"))
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform)
   .in(file("utest"))
@@ -65,7 +65,7 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %%% "utest" % "0.7.10"),
+      "com.lihaoyi" %%% "utest" % "0.7.11"),
 
     Test / scalacOptions -= "-Xfatal-warnings")
 
