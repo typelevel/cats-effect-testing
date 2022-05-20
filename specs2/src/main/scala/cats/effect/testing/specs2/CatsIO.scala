@@ -16,13 +16,12 @@
 
 package cats.effect.testing.specs2
 
-import cats.effect.IO
+import cats.effect.{ContextShift, IO, Timer}
 
 import scala.concurrent.ExecutionContext
-import cats.effect.Temporal
 
 trait CatsIO extends CatsEffect {
   implicit def executionContext: ExecutionContext = ExecutionContext.global
   implicit def ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit def ioTimer: Temporal[IO] = IO.timer(executionContext)
+  implicit def ioTimer: Timer[IO] = IO.timer(executionContext)
 }

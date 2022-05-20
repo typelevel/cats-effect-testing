@@ -19,9 +19,8 @@ package cats.effect.testing.utest
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-import cats.effect.IO
+import cats.effect.{ContextShift, IO, Timer}
 import utest._
-import cats.effect.Temporal
 
 
 abstract class IOTestSuite extends TestSuite {
@@ -32,7 +31,7 @@ abstract class IOTestSuite extends TestSuite {
   protected lazy val executionContext: ExecutionContext = makeExecutionContext()
 
   implicit def ioContextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit def ioTimer: Temporal[IO] = IO.timer(executionContext)
+  implicit def ioTimer: Timer[IO] = IO.timer(executionContext)
 
   override def utestWrap(path: Seq[String], runBody: => Future[Any])(implicit ec: ExecutionContext): Future[Any] = {
     // Shadow the parameter EC with our EC
