@@ -27,7 +27,9 @@ import org.scalatest.time.Span
 
 trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport with RuntimePlatform { asyncTestSuite: AsyncTestSuite =>
 
-  implicit lazy val ioRuntime: IORuntime = createIORuntime(executionContext)
+  override implicit def executionContext = ioRuntime.compute
+
+  implicit lazy val ioRuntime: IORuntime = IORuntime.global
 
   implicit def ioRetrying[T]: Retrying[IO[T]] = new Retrying[IO[T]] {
     override def retry(timeout: Span, interval: Span, pos: Position)(fun: => IO[T]): IO[T] =
