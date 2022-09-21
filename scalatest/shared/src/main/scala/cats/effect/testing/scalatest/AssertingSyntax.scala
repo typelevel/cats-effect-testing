@@ -50,8 +50,15 @@ trait AssertingSyntax {
      * Asserts that the `F[A]` fails with an exception of type `E`.
      */
     def assertThrows[E <: Throwable](implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
+      assertThrows(_ => succeed)
+
+    /**
+     * Asserts that the `F[A]` fails with an exception of type `E` and an expected error.
+     */
+    def assertThrows[E <: Throwable](test: E => Assertion)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
       self.attempt.flatMap {
-        case Left(_: E) => F.pure(Succeeded: Assertion)
+        case Left(e: E) =>
+            F.delay(test(e))
         case Left(t) =>
           F.delay(
             fail(
@@ -68,25 +75,12 @@ trait AssertingSyntax {
      * Asserts that the `F[A]` fails with an exception of type `E` and an expected error message.
      */
     def assertThrowsWithMessage[E <: Throwable](expectedMessage: String)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
-      self.attempt.flatMap {
-        case Left(e: E) =>
-          if (e.getMessage == expectedMessage)
-            F.pure(Succeeded: Assertion)
-          else
-            F.delay(
-              fail(
-                s"Expected exception to have message '$expectedMessage' but got: ${e.getMessage}"
-              )
-            )
-        case Left(t) =>
-          F.delay(
-            fail(
-              s"Expected an exception of type ${ct.runtimeClass.getName} but got an exception: $t"
-            )
-          )
-        case Right(a) =>
-          F.delay(
-            fail(s"Expected an exception of type ${ct.runtimeClass.getName} but got a result: $a")
+      assertThrows[E] { e =>
+        if (e.getMessage == expectedMessage)
+          succeed
+        else
+          fail(
+            s"Expected exception to have message '$expectedMessage' but got: ${e.getMessage}"
           )
       }
 
