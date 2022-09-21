@@ -50,12 +50,12 @@ trait AssertingSyntax {
      * Asserts that the `F[A]` fails with an exception of type `E`.
      */
     def assertThrows[E <: Throwable](implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
-      assertThrows(_ => succeed)
+      assertThrowsError[E](_ => succeed)
 
     /**
      * Asserts that the `F[A]` fails with an exception of type `E` and an expected error.
      */
-    def assertThrows[E <: Throwable](test: E => Assertion)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
+    def assertThrowsError[E <: Throwable](test: E => Assertion)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
       self.attempt.flatMap {
         case Left(e: E) =>
             F.delay(test(e))
@@ -75,7 +75,7 @@ trait AssertingSyntax {
      * Asserts that the `F[A]` fails with an exception of type `E` and an expected error message.
      */
     def assertThrowsWithMessage[E <: Throwable](expectedMessage: String)(implicit F: Sync[F], ct: reflect.ClassTag[E]): F[Assertion] =
-      assertThrows[E] { e =>
+      assertThrowsError[E] { e =>
         if (e.getMessage == expectedMessage)
           succeed
         else
