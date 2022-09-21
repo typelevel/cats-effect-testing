@@ -19,20 +19,21 @@ package cats.effect.testing.scalatest
 import cats.effect.IO
 import cats.effect.testing.RuntimePlatform
 import cats.effect.unsafe.IORuntime
-
 import org.scalactic.source.Position
 import org.scalatest.AsyncTestSuite
 import org.scalatest.enablers.Retrying
 import org.scalatest.time.Span
 
+import scala.concurrent.ExecutionContext.global
+
 trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport with RuntimePlatform { asyncTestSuite: AsyncTestSuite =>
 
-  implicit lazy val ioRuntime: IORuntime = createIORuntime(executionContext)
+  implicit lazy val ioRuntime: IORuntime = createIORuntime(global)
 
   implicit def ioRetrying[T]: Retrying[IO[T]] = new Retrying[IO[T]] {
     override def retry(timeout: Span, interval: Span, pos: Position)(fun: => IO[T]): IO[T] =
       IO.fromFuture(
-        IO(Retrying.retryingNatureOfFutureT[T](executionContext).retry(timeout, interval, pos)(fun.unsafeToFuture())),
+        IO(Retrying.retryingNatureOfFutureT[T](global).retry(timeout, interval, pos)(fun.unsafeToFuture())),
       )
   }
 }
