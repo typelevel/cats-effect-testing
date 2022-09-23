@@ -13,22 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package cats.effect.testing.scalatest
 
-import cats.effect.IO
+import cats.effect.testing.RuntimePlatform
 import cats.effect.unsafe.IORuntime
-import org.scalactic.source.Position
 import org.scalatest.AsyncTestSuite
-import org.scalatest.enablers.Retrying
-import org.scalatest.time.Span
 
-trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport with ScalatestRuntimePlatform { asyncTestSuite: AsyncTestSuite =>
+private[testing] trait ScalatestRuntimePlatform extends RuntimePlatform { asyncTestSuite: AsyncTestSuite =>
 
-  implicit def ioRetrying[T]: Retrying[IO[T]] = new Retrying[IO[T]] {
-    override def retry(timeout: Span, interval: Span, pos: Position)(fun: => IO[T]): IO[T] =
-      IO.fromFuture(
-        IO(Retrying.retryingNatureOfFutureT[T](IORuntime.global.compute).retry(timeout, interval, pos)(fun.unsafeToFuture())),
-      )
-  }
+  implicit lazy val ioRuntime: IORuntime = IORuntime.global
+
 }
