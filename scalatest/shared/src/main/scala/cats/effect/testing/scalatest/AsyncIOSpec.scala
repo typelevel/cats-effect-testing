@@ -17,14 +17,13 @@
 package cats.effect.testing.scalatest
 
 import cats.effect.IO
-import cats.effect.testing.RuntimePlatform
 import cats.effect.unsafe.IORuntime
 import org.scalactic.source.Position
 import org.scalatest.AsyncTestSuite
 import org.scalatest.enablers.Retrying
 import org.scalatest.time.Span
 
-trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport with RuntimePlatform { asyncTestSuite: AsyncTestSuite =>
+trait AsyncIOSpec extends AssertingSyntax with EffectTestSupport { asyncTestSuite: AsyncTestSuite =>
 
   implicit lazy val ioRuntime: IORuntime = IORuntime.global
 
