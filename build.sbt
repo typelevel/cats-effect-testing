@@ -46,7 +46,7 @@ lazy val specs2 = project
   .settings(
     name := "cats-effect-testing-specs2",
 
-    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.16.1").cross(CrossVersion.for3Use2_13),
+    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.17.0").cross(CrossVersion.for3Use2_13),
 
     mimaPreviousArtifacts := {
       if (isDotty.value)
