@@ -53,7 +53,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %%% "scalatest" % "3.2.13"))
+      "org.scalatest"    %%% "scalatest" % "3.2.14"))
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform)
   .in(file("utest"))
