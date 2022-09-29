@@ -20,7 +20,7 @@ ThisBuild / tlBaseVersion := "1.4"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
-ThisBuild / crossScalaVersions := Seq("3.1.3", "2.12.17", "2.13.8")
+ThisBuild / crossScalaVersions := Seq("3.2.0", "2.12.17", "2.13.8")
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
@@ -42,7 +42,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.16.1")
+    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.17.0")
       .cross(CrossVersion.for3Use2_13)
       .exclude("org.scala-js", "scala-js-macrotask-executor_sjs1_2.13"))
 
@@ -53,7 +53,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %%% "scalatest" % "3.2.13"))
+      "org.scalatest"    %%% "scalatest" % "3.2.14"))
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform)
   .in(file("utest"))
