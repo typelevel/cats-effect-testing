@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.1.3", "2.12.17", "2.13.8")
+ThisBuild / crossScalaVersions := Seq("3.2.0", "2.12.17", "2.13.8")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
@@ -46,7 +46,7 @@ lazy val specs2 = project
   .settings(
     name := "cats-effect-testing-specs2",
 
-    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.16.1").cross(CrossVersion.for3Use2_13),
+    libraryDependencies += ("org.specs2" %% "specs2-core" % "4.17.0").cross(CrossVersion.for3Use2_13),
 
     mimaPreviousArtifacts := {
       if (isDotty.value)
@@ -76,7 +76,7 @@ lazy val scalatest = project
 
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
-      "org.scalatest"    %% "scalatest" % "3.2.13"),
+      "org.scalatest"    %% "scalatest" % "3.2.14"),
 
     mimaPreviousArtifacts := mimaPreviousArtifacts.value -- Seq(
       "com.codecommit" %% name.value % "0.1.0",
