@@ -25,7 +25,7 @@ ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
-val CatsEffectVersion = "3.3.14"
+val CatsEffectVersion = "3.4.0"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
