@@ -20,12 +20,12 @@ ThisBuild / tlBaseVersion := "1.5"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
-ThisBuild / crossScalaVersions := Seq("3.2.1", "2.12.17", "2.13.8")
+ThisBuild / crossScalaVersions := Seq("3.2.1", "2.12.17", "2.13.10")
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
-val CatsEffectVersion = "3.3.14"
+val CatsEffectVersion = "3.4.0"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
