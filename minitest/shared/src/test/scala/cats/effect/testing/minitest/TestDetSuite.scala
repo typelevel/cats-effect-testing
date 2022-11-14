@@ -20,6 +20,7 @@ import cats.effect.IO
 import scala.concurrent.duration._
 import cats.implicits._
 
+@deprecated("use TestControl instead", since = "1.5.0")
 object TestDetSuite extends DeterministicIOTestSuite {
   test("IO values should work") {
     IO(true).flatMap(b => IO(assert(b)))
