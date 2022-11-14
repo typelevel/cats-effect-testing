@@ -24,6 +24,7 @@ ThisBuild / crossScalaVersions := Seq("3.2.1", "2.12.17", "2.13.10")
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
+ThisBuild / tlSonatypeUseLegacyHost := false
 
 val CatsEffectVersion = "3.4.0"
 
