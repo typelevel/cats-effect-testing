@@ -44,7 +44,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.17.0")
+    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.19.0")
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
