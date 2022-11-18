@@ -20,12 +20,13 @@ ThisBuild / tlBaseVersion := "1.5"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
-ThisBuild / crossScalaVersions := Seq("3.2.1", "2.12.17", "2.13.8")
+ThisBuild / crossScalaVersions := Seq("3.2.1", "2.12.17", "2.13.10")
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
+ThisBuild / tlSonatypeUseLegacyHost := false
 
-val CatsEffectVersion = "3.3.14"
+val CatsEffectVersion = "3.4.1"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
@@ -43,7 +44,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.17.0")
+    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.19.0")
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)

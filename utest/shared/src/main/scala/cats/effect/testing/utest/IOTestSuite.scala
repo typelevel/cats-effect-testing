@@ -24,7 +24,7 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
-@nowarn("msg=parameter value evidence\\$1 in class EffectTestSuite is never used")
+@nowarn
 abstract class EffectTestSuite[F[_]: Temporal: UnsafeRun](implicit Tag: ClassTag[F[Any]])
     extends _root_.utest.TestSuite {
 
