@@ -54,7 +54,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %%% "scalatest" % "3.2.14"))
+      "org.scalatest"    %%% "scalatest" % "3.2.15"))
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
