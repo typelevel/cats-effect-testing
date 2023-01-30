@@ -27,6 +27,7 @@ ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 ThisBuild / tlSonatypeUseLegacyHost := false
 
 val CatsEffectVersion = "3.4.8"
+val ScalaTestVersion = "3.2.15"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
@@ -54,7 +55,11 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     name := "cats-effect-testing-scalatest",
 
     libraryDependencies ++= Seq(
-      "org.scalatest"    %%% "scalatest" % "3.2.15"))
+      "org.scalatest" %%% "scalatest-core" % ScalaTestVersion,
+      "org.scalatest" %%% "scalatest-shouldmatchers" % ScalaTestVersion % Test,
+      "org.scalatest" %%% "scalatest-mustmatchers" % ScalaTestVersion % Test,
+      "org.scalatest" %%% "scalatest-freespec" % ScalaTestVersion % Test,
+      "org.scalatest" %%% "scalatest-wordspec" % ScalaTestVersion % Test))
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
