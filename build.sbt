@@ -27,7 +27,7 @@ ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 ThisBuild / tlSonatypeUseLegacyHost := false
 
 val CatsEffectVersion = "3.5.0"
-val ScalaTestVersion = "3.2.15"
+val ScalaTestVersion = "3.2.16"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
