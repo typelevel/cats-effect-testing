@@ -20,7 +20,7 @@ ThisBuild / tlBaseVersion := "1.5"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
-ThisBuild / crossScalaVersions := Seq("3.3.0", "2.12.18", "2.13.11")
+ThisBuild / crossScalaVersions := Seq("3.3.1", "2.12.18", "2.13.11")
 
 ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
@@ -28,7 +28,7 @@ ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 ThisBuild / tlSonatypeUseLegacyHost := false
 
 val CatsEffectVersion = "3.5.1"
-val ScalaTestVersion = "3.2.16"
+val ScalaTestVersion = "3.2.17"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
