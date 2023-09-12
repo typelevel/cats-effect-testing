@@ -23,7 +23,7 @@ ThisBuild / organization := "com.codecommit"
 ThisBuild / publishGithubUser := "djspiewak"
 ThisBuild / publishFullName := "Daniel Spiewak"
 
-ThisBuild / crossScalaVersions := Seq("3.3.1", "2.12.18", "2.13.11")
+ThisBuild / crossScalaVersions := Seq("3.3.1", "2.12.18", "2.13.12")
 
 ThisBuild / githubWorkflowTargetBranches := Seq("series/0.x")
 
