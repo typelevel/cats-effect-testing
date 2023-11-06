@@ -73,7 +73,7 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %%% "utest" % "0.8.1"),
+      "com.lihaoyi" %%% "utest" % "0.8.2"),
 
     Test / scalacOptions -= "-Xfatal-warnings")
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
