@@ -73,11 +73,18 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   }
 
   override def afterAll(): Unit = {
-    UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout)
-
-    gate = None
-    value = None
-    shutdown = ().pure[F]
+    UnsafeRun[F].unsafeToFuture(
+      for {
+        _ <- shutdown
+        _ <- Sync[F] delay {
+          gate = None
+          value = None
+          shutdown = ().pure[F]
+        }
+      } yield (),
+      finiteResourceTimeout
+    )
+    ()
   }
 
   override type FixtureParam = A
