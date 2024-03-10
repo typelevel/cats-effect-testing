@@ -22,12 +22,10 @@ import cats.effect.unsafe.IORuntime
 
 import org.scalatest.FixtureAsyncTestSuite
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 import scala.concurrent.duration._
 
 trait CatsResourceIO[A] extends CatsResource[IO, A] with RuntimePlatform { this: FixtureAsyncTestSuite =>
-
-  override implicit def executionContext: ExecutionContext = ExecutionContext.global
 
   final def ResourceAsync = Async[IO]
 

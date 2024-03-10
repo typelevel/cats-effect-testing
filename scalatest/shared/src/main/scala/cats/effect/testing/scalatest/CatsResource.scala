@@ -24,7 +24,7 @@ import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome, O
 
 import scala.concurrent.duration._
 
-trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSuite =>
+trait CatsResource[F[_], A] extends BeforeAndAfterAll with GlobalExecutionContext { this: FixtureAsyncTestSuite =>
 
   def ResourceAsync: Async[F]
   private[this] implicit def _ResourceAsync: Async[F] = ResourceAsync
