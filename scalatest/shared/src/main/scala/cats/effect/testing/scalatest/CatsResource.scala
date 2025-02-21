@@ -18,11 +18,11 @@ package cats.effect.testing
 package scalatest
 
 import cats.effect.{Async, Deferred, Resource, Sync}
-import cats.syntax.all._
+import cats.syntax.all.*
 
 import org.scalatest.{BeforeAndAfterAll, FixtureAsyncTestSuite, FutureOutcome, Outcome}
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSuite =>
 
@@ -46,7 +46,7 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   @volatile
   private var gate: Option[Deferred[F, Unit]] = None
   @volatile
-  private var value: Option[A] = None
+  private var value: Option[Either[Throwable, A]] = None
   @volatile
   private var shutdown: F[Unit] = ().pure[F]
 
@@ -57,7 +57,7 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
         gate = Some(d)
       }
 
-      pair <- resource.allocated
+      pair <- resource.attempt.allocated
       (a, shutdownAction) = pair
 
       _ <- Sync[F] delay {
@@ -88,9 +88,15 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
         case Some(g) =>
           g.get *> (Async[F] fromFuture {
             Sync[F] delay {
-              withFixture(test.toNoArgAsyncTest(value.getOrElse {
-                fail("Resource Not Initialized When Trying to Use")
-              })).toFuture
+              withFixture {
+                test.toNoArgAsyncTest {
+                  value match {
+                    case Some(Right(x)) => x
+                    case Some(Left(ex)) => fail("Failed during fixture acquisition", ex)
+                    case None => fail("Resource Not Initialized When Trying to Use")
+                  }
+                }
+              }.toFuture
             }
           })
 
