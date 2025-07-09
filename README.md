@@ -163,6 +163,10 @@ Early versions (`0.x.y`) were published under the `com.codecommit` groupId.
 
 ## Similar projects
 
+### munit-cats-effect
+
+[munit-cats-effect](https://github.com/typelevel/munit-cats-effect) is a very similar library to this one, but specifically targeted at [munit](https://scalameta.org/munit/).
+
 ### scalacheck-effect
 
 [scalacheck-effect](https://github.com/typelevel/scalacheck-effect) is a library that extends the functionality of [ScalaCheck](https://scalacheck.org) to support "effectful" properties. An effectful property is one that evaluates each sample in some type constructor `F[_]`.
