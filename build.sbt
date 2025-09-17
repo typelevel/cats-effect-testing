@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / tlBaseVersion := "1.6"
+ThisBuild / tlBaseVersion := "1.7"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
