@@ -17,7 +17,6 @@
 package cats.effect.testing.specs2
 
 import cats.effect.{IO, Resource}
-import cats.effect.concurrent.{Ref, Deferred}
 import cats.implicits._
 import org.specs2.mutable.Specification
 
@@ -38,7 +37,7 @@ class CatsEffectSpecs extends Specification with CatsEffect {
     }.pure[Resource[IO, *]]
 
     "resource must be live for use" in {
-      Resource.make(Ref[IO].of(true))(_.set(false)).map{ 
+      Resource.make(cats/effect/Ref[IO].of(true))(_.set(false)).map{ 
         _.get.map(_ must beTrue)
       }
     }
@@ -46,7 +45,7 @@ class CatsEffectSpecs extends Specification with CatsEffect {
     "really execute effects" in {
       "First, this check creates a deferred value.".br
 
-      val deferredValue = Deferred.unsafeUncancelable[IO, Boolean]
+      val deferredValue = cats/effect/Deferred.unsafeUncancelable[IO, Boolean]
 
       "Then it executes two mutually associated steps:".br.tab
 

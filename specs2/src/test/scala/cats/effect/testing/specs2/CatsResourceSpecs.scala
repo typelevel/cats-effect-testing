@@ -17,13 +17,12 @@
 package cats.effect.testing.specs2
 
 import cats.effect._
-import cats.effect.concurrent.Ref
 import org.specs2.mutable.Specification
 
-class CatsResourceSpecs extends Specification with CatsResourceIO[Ref[IO, Int]] {
+class CatsResourceSpecs extends Specification with CatsResourceIO[cats/effect/Ref[IO, Int]] {
   sequential
 
-  override def resource: Resource[IO, Ref[IO, Int]] = Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
+  override def resource: Resource[IO, cats/effect/Ref[IO, Int]] = Resource.make(cats/effect/Ref[IO].of(0))(_.set(Int.MinValue))
 
   "cats resource specifications" should {
     "run a resource modification" in withResource { ref => 

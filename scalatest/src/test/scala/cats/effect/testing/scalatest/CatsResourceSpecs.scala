@@ -17,14 +17,13 @@
 package cats.effect.testing.scalatest
 
 import cats.effect._
-import cats.effect.concurrent.Ref
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.wordspec.FixtureAsyncWordSpec
 
-class CatsResourceSpecs extends FixtureAsyncWordSpec with AsyncIOSpec with CatsResourceIO[Ref[IO, Int]] {
+class CatsResourceSpecs extends FixtureAsyncWordSpec with AsyncIOSpec with CatsResourceIO[cats/effect/Ref[IO, Int]] {
 
-  override val resource: Resource[IO, Ref[IO, Int]] =
-    Resource.make(Ref[IO].of(0))(_.set(Int.MinValue))
+  override val resource: Resource[IO, cats/effect/Ref[IO, Int]] =
+    Resource.make(cats/effect/Ref[IO].of(0))(_.set(Int.MinValue))
 
   "cats resource specifications" should {
     "run a resource modification" in { ref =>
