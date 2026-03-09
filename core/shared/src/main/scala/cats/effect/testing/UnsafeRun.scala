@@ -17,14 +17,15 @@
 package cats.effect
 package testing
 
-import scala.annotation.nowarn
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 
 trait UnsafeRun[F[_]] {
   def unsafeToFuture[A](fa: F[A]): Future[A]
-  def unsafeToFuture[A](fa: F[A], @nowarn("msg=never used") timeout: Option[FiniteDuration]): Future[A]
-    = unsafeToFuture(fa) // For binary compatibility
+  def unsafeToFuture[A](fa: F[A], timeout: Option[FiniteDuration]): Future[A] = {
+    val _ = timeout
+    unsafeToFuture(fa) // For binary compatibility
+  }
 }
 
 object UnsafeRun {
