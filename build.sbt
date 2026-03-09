@@ -26,6 +26,8 @@ ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
+
 val CatsEffectVersion = "3.7.0"
 val ScalaTestVersion = "3.2.18"
 
