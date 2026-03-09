@@ -29,7 +29,7 @@ ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 
 val CatsEffectVersion = "3.7.0"
-val ScalaTestVersion = "3.2.18"
+val ScalaTestVersion = "3.2.19"
 
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
