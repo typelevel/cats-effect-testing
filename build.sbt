@@ -16,7 +16,7 @@
 
 name := "cats-effect-testing"
 
-ThisBuild / tlBaseVersion := "1.7"
+ThisBuild / tlBaseVersion := "1.8"
 ThisBuild / startYear := Some(2020)
 ThisBuild / developers += tlGitHubDev("djspiewak", "Daniel Spiewak")
 
@@ -26,7 +26,7 @@ ThisBuild / tlVersionIntroduced := Map("3" -> "1.1.1")
 
 ThisBuild / tlCiReleaseBranches := Seq("series/1.x")
 
-val CatsEffectVersion = "3.6.3"
+val CatsEffectVersion = "3.7.0"
 val ScalaTestVersion = "3.2.18"
 
 lazy val root = tlCrossRootProject
@@ -45,7 +45,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .dependsOn(core)
   .settings(
     name := "cats-effect-testing-specs2",
-    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.20.5")
+    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.20.9")
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
@@ -72,7 +72,7 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
 
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-effect-testkit" % CatsEffectVersion,
-      "com.lihaoyi" %%% "utest" % "0.8.2"),
+      "com.lihaoyi" %%% "utest" % "0.9.0"),
 
     Test / scalacOptions -= "-Xfatal-warnings")
   .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
