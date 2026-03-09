@@ -31,6 +31,8 @@ ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 val CatsEffectVersion = "3.7.0"
 val ScalaTestVersion = "3.2.19"
 
+val NativeVersionIntroduced = "1.8.0"
+
 lazy val root = tlCrossRootProject
   .aggregate(core, specs2, utest, minitest, scalatest)
 
@@ -40,7 +42,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     name := "cats-effect-testing-core",
     tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.3.0").toMap,
     libraryDependencies += "org.typelevel" %%% "cats-effect" % CatsEffectVersion)
-  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
+  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> NativeVersionIntroduced).toMap)
 
 lazy val specs2 = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("specs2"))
@@ -48,7 +50,7 @@ lazy val specs2 = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     name := "cats-effect-testing-specs2",
     libraryDependencies += "org.specs2" %%% "specs2-core" % "4.20.9")
-  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
+  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> NativeVersionIntroduced).toMap)
 
 lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("scalatest"))
@@ -62,7 +64,7 @@ lazy val scalatest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scalatest" %%% "scalatest-mustmatchers" % ScalaTestVersion % Test,
       "org.scalatest" %%% "scalatest-freespec" % ScalaTestVersion % Test,
       "org.scalatest" %%% "scalatest-wordspec" % ScalaTestVersion % Test))
-  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
+  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> NativeVersionIntroduced).toMap)
 
 lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("utest"))
@@ -77,7 +79,7 @@ lazy val utest = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "com.lihaoyi" %%% "utest" % "0.9.0"),
 
     Test / scalacOptions -= "-Xfatal-warnings")
-  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "1.5.0").toMap)
+  .nativeSettings(tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> NativeVersionIntroduced).toMap)
 
 lazy val minitest = crossProject(JSPlatform, JVMPlatform)
   .in(file("minitest"))
