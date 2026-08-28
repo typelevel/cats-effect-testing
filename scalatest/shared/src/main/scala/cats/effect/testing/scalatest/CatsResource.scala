@@ -50,7 +50,9 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
   @volatile
   private var shutdown: F[Unit] = ().pure[F]
 
-  override def beforeAll(): Unit = {
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+
     val toRun = for {
       d <- Deferred[F, Unit]
       _ <- Sync[F] delay {
@@ -68,16 +70,17 @@ trait CatsResource[F[_], A] extends BeforeAndAfterAll { this: FixtureAsyncTestSu
       _ <- d.complete(())
     } yield ()
 
-    UnsafeRun[F].unsafeToFuture(toRun, finiteResourceTimeout)
-    ()
+    val _ = UnsafeRun[F].unsafeToFuture(toRun, finiteResourceTimeout)
   }
 
-  override def afterAll(): Unit = {
+  override protected def afterAll(): Unit = {
     UnsafeRun[F].unsafeToFuture(shutdown, finiteResourceTimeout)
 
     gate = None
     value = None
     shutdown = ().pure[F]
+
+    super.afterAll()
   }
 
   override type FixtureParam = A
